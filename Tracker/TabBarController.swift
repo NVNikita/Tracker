@@ -23,6 +23,7 @@ final class TapBarController: UITabBarController {
                                                            selectedImage: nil)
         
         self.viewControllers = [trackersViewController, statisticsViewController]
+        self.tabBar.layer.masksToBounds = true
+        self.tabBar.layer.borderWidth = 0.3
     }
-    
 }
