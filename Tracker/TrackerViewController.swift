@@ -8,84 +8,86 @@
 import UIKit
 
 class TrackerViewController: UIViewController {
-    
-    private let labelTask = UILabel()
-    private let labelTitle = UILabel()
-    private let datePicker = UIDatePicker()
-    private let imageViewTracker = UIImageView(image: UIImage(named: "trackerLogo"))
+    private let placeholderImageView = UIImageView(image: UIImage(named: "trackerLogo"))
+    private let placeholderLabel = UILabel()
     private let searchField = UISearchTextField()
-    private let buttonPlus = UIButton.systemButton(with: UIImage(named: "plus")!,
-                                                   target: TrackerViewController.self,
-                                                   action: #selector(Self.buttonPlusTap))
+    private let datePicker = UIDatePicker()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .backgroundView
-        
-        initUI()
+        setupNavigationBar()
+        setupUI()
         setupConstraints()
     }
     
-    private func initUI() {
-        buttonPlus.translatesAutoresizingMaskIntoConstraints = false
-        labelTitle.translatesAutoresizingMaskIntoConstraints = false
-        searchField.translatesAutoresizingMaskIntoConstraints = false
-        imageViewTracker.translatesAutoresizingMaskIntoConstraints = false
-        labelTask.translatesAutoresizingMaskIntoConstraints = false
-        datePicker.translatesAutoresizingMaskIntoConstraints = false
+    private func setupNavigationBar() {
+        title = "Трекеры"
+        navigationController?.navigationBar.prefersLargeTitles = true
         
-        view.addSubview(labelTitle)
-        view.addSubview(buttonPlus)
+        let addButton = UIBarButtonItem(
+            image: UIImage(named: "plus"),
+            style: .plain,
+            target: self,
+            action: #selector(addButtonTapped)
+        )
+        addButton.tintColor = .black
+        navigationItem.leftBarButtonItem = addButton
+        
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .compact
+        
+        let datePickerContainer = UIView()
+        datePickerContainer.addSubview(datePicker)
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            datePicker.topAnchor.constraint(equalTo: datePickerContainer.topAnchor),
+            datePicker.bottomAnchor.constraint(equalTo: datePickerContainer.bottomAnchor),
+            datePicker.leadingAnchor.constraint(equalTo: datePickerContainer.leadingAnchor),
+            datePicker.trailingAnchor.constraint(equalTo: datePickerContainer.trailingAnchor)
+        ])
+        
+        let datePickerItem = UIBarButtonItem(customView: datePickerContainer)
+        navigationItem.rightBarButtonItem = datePickerItem
+    }
+    
+    private func setupUI() {
+        placeholderImageView.translatesAutoresizingMaskIntoConstraints = false
+        placeholderImageView.contentMode = .scaleAspectFit
+        
+        placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
+        placeholderLabel.text = "Что будем отслеживать?"
+        placeholderLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        placeholderLabel.textColor = .black
+        
+        searchField.translatesAutoresizingMaskIntoConstraints = false
+        searchField.placeholder = "Поиск"
+        
+        view.addSubview(placeholderImageView)
+        view.addSubview(placeholderLabel)
         view.addSubview(searchField)
-        view.addSubview(imageViewTracker)
-        view.addSubview(labelTask)
-        view.addSubview(datePicker)
     }
     
     private func setupConstraints() {
-        
-        // labelTitle
-        labelTitle.text = "Трекеры"
-        labelTitle.textColor = .black
-        labelTitle.font = .systemFont(ofSize: 34, weight: .bold)
-        labelTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        labelTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 88).isActive = true
-        
-        // buttonPlus
-        buttonPlus.tintColor = .black
-        buttonPlus.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        buttonPlus.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        buttonPlus.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6).isActive = true
-        buttonPlus.topAnchor.constraint(equalTo: view.topAnchor, constant: 45).isActive = true
-        
-        // searchField
-        searchField.placeholder = "Поиск"
-        searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        searchField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        searchField.topAnchor.constraint(equalTo: labelTitle.bottomAnchor, constant: 7).isActive = true
-        
-        // imageViewTracker
-        imageViewTracker.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        imageViewTracker.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        imageViewTracker.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        imageViewTracker.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        // labelTask
-        labelTask.text = "Что будем отслеживать?"
-        labelTask.font = .systemFont(ofSize: 12, weight: .medium)
-        labelTask.centerXAnchor.constraint(equalTo: imageViewTracker.centerXAnchor).isActive = true
-        labelTask.topAnchor.constraint(equalTo: imageViewTracker.bottomAnchor, constant: 8).isActive = true
-        
-        // datepicker
-        datePicker.datePickerMode = .date
-        datePicker.heightAnchor.constraint(equalToConstant: 34).isActive = true
-        datePicker.widthAnchor.constraint(equalToConstant: 97).isActive = true
-        datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        datePicker.centerYAnchor.constraint(equalTo: buttonPlus.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            
+            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            searchField.heightAnchor.constraint(equalToConstant: 36),
+            
+            placeholderImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            placeholderImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            placeholderImageView.widthAnchor.constraint(equalToConstant: 80),
+            placeholderImageView.heightAnchor.constraint(equalToConstant: 80),
+            
+            placeholderLabel.topAnchor.constraint(equalTo: placeholderImageView.bottomAnchor, constant: 8),
+            placeholderLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
     }
     
-    @objc func buttonPlusTap() {
+    @objc private func addButtonTapped() {
         
     }
 }
