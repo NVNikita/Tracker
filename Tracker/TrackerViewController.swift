@@ -8,6 +8,10 @@
 import UIKit
 
 class TrackerViewController: UIViewController {
+    
+    var categories: [TrackerCategory] = []
+    var completedTrackers: [TrackerRecord] = []
+    
     private let placeholderImageView = UIImageView(image: UIImage(named: "trackerLogo"))
     private let placeholderLabel = UILabel()
     private let searchField = UISearchTextField()
