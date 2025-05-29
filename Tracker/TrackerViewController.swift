@@ -92,6 +92,8 @@ class TrackerViewController: UIViewController {
     }
     
     @objc private func addButtonTapped() {
-        
+        let navVC = UINavigationController(rootViewController: TrackerTypeViewController())
+        navVC.modalPresentationStyle = .pageSheet
+        present(navVC, animated: true)
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EB18C7372DE90AEC00F2AB56 /* TrackerTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB18C7362DE90AEC00F2AB56 /* TrackerTypeViewController.swift */; };
 		EB528B352DAAE2E20036FA05 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB528B342DAAE2E20036FA05 /* Tracker.swift */; };
 		EB528B372DAAE2F20036FA05 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB528B362DAAE2F20036FA05 /* TrackerCategory.swift */; };
 		EB528B392DAAE2FD0036FA05 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB528B382DAAE2FD0036FA05 /* TrackerRecord.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EB18C7362DE90AEC00F2AB56 /* TrackerTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeViewController.swift; sourceTree = "<group>"; };
 		EB528B342DAAE2E20036FA05 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		EB528B362DAAE2F20036FA05 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		EB528B382DAAE2FD0036FA05 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				EBE7BC092D920B8100006499 /* LaunchScreen.storyboard */,
 				EBE7BC0C2D920B8100006499 /* Info.plist */,
 				EB9DD2CF2D9464B400B4AD5F /* TabBarController.swift */,
+				EB18C7362DE90AEC00F2AB56 /* TrackerTypeViewController.swift */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -164,6 +167,7 @@
 				EB9DD2D22D9469A400B4AD5F /* TrackerViewController.swift in Sources */,
 				EBE7BC012D920B7F00006499 /* SceneDelegate.swift in Sources */,
 				EB9DD2D42D9469C400B4AD5F /* StatisticViewController.swift in Sources */,
+				EB18C7372DE90AEC00F2AB56 /* TrackerTypeViewController.swift in Sources */,
 				EB528B372DAAE2F20036FA05 /* TrackerCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
