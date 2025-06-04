@@ -9,8 +9,8 @@ import UIKit
 
 final class TrackerTypeViewController: UIViewController {
     
-    let buttonHabbit = UIButton(type: .system)
-    let buttonEvent = UIButton(type: .system)
+    private let buttonHabbit = UIButton(type: .system)
+    private let buttonEvent = UIButton(type: .system)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +68,9 @@ final class TrackerTypeViewController: UIViewController {
     }
     
     @objc private func buttonHabbitTapped() {
-        
+        let navVC = UINavigationController(rootViewController: CreatingTrackersViewController())
+        navVC.modalPresentationStyle = .pageSheet
+        present(navVC, animated: true)
     }
     
     @objc private func buttonEventTapped() {
