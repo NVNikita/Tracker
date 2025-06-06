@@ -1,3 +1,10 @@
+//
+//  CreatingTrackersViewController.swift
+//  Tracker
+//
+//  Created by Никита Нагорный on 03.06.2025.
+//
+
 import UIKit
 
 final class CreatingTrackersViewController: UIViewController {
@@ -6,6 +13,7 @@ final class CreatingTrackersViewController: UIViewController {
     private let cancelButton = UIButton(type: .system)
     private let topTableView = UITableView()
     private let bottomTableView = UITableView()
+    private var selectedDays: Set<String> = []
     
     private let categories = ["Категория", "Расписание"]
     
@@ -46,6 +54,7 @@ final class CreatingTrackersViewController: UIViewController {
         creatingButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         creatingButton.backgroundColor = .grayCreatingButton
         creatingButton.layer.cornerRadius = 16
+        creatingButton.addTarget(self, action: #selector(creatingButtonTapped), for: .touchUpInside)
         
         cancelButton.setTitle("Отменить", for: .normal)
         cancelButton.setTitleColor(.red, for: .normal)
@@ -55,6 +64,7 @@ final class CreatingTrackersViewController: UIViewController {
         cancelButton.layer.masksToBounds = true
         cancelButton.layer.borderWidth = 1
         cancelButton.layer.borderColor = UIColor.red.cgColor
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
     }
     
     private func setupTables() {
@@ -104,6 +114,40 @@ final class CreatingTrackersViewController: UIViewController {
             creatingButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 8)
         ])
     }
+    
+    private func getShortDaysString() -> String {
+        if selectedDays.count == 7 {
+            return "Каждый день"
+        } else if selectedDays.isEmpty {
+            return ""
+        } else {
+            let shortDays = selectedDays.map { day in
+                switch day {
+                case "Понедельник": return "Пн"
+                case "Вторник": return "Вт"
+                case "Среда": return "Ср"
+                case "Четверг": return "Чт"
+                case "Пятница": return "Пт"
+                case "Суббота": return "Сб"
+                case "Воскресенье": return "Вс"
+                default: return ""
+                }
+            }.sorted { first, second in
+                let order = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
+                return order.firstIndex(of: first) ?? 0 < order.firstIndex(of: second) ?? 0
+            }
+            
+            return shortDays.joined(separator: ", ")
+        }
+    }
+    
+    @objc private func creatingButtonTapped() {
+        
+    }
+    
+    @objc private func cancelButtonTapped() {
+        dismiss(animated: true)
+    }
 }
 
 extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDelegate {
@@ -118,7 +162,6 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
             return categories.count
         }
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == topTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TextFieldCell", for: indexPath) as! TextFieldTableViewCell
@@ -127,12 +170,22 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
             cell.textField.textColor = .black
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "CategoryCell")
             cell.textLabel?.text = categories[indexPath.row]
             cell.textLabel?.font = .systemFont(ofSize: 17)
             cell.textLabel?.textColor = .black
             cell.accessoryType = .disclosureIndicator
             cell.backgroundColor = .clear
+            
+            if indexPath.row == 1 {
+                let daysString = getShortDaysString()
+                if !daysString.isEmpty {
+                    cell.detailTextLabel?.text = daysString
+                    cell.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+                    cell.detailTextLabel?.textColor = .gray
+                    cell.detailTextLabel?.numberOfLines = 0
+                }
+            }
             
             if indexPath.row != 0 {
                 cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
@@ -145,19 +198,22 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if tableView == topTableView {
-            return 75
-        } else {
-            return 75
-        }
+        return 75
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if tableView == bottomTableView {
-            let category = categories[indexPath.row]
-            print("Selected: \(category)")
+        if tableView == bottomTableView && indexPath.row == 1 {
+            let scheduleVC = ScheduleViewController()
+            scheduleVC.selectedDays = selectedDays
+            scheduleVC.onDaysSelected = { [weak self] days in
+                self?.selectedDays = days
+                self?.bottomTableView.reloadRows(at: [indexPath], with: .none)
+            }
+            let navVC = UINavigationController(rootViewController: scheduleVC)
+            navVC.modalPresentationStyle = .pageSheet
+            present(navVC, animated: true)
         }
     }
 }
