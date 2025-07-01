@@ -69,13 +69,29 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		EB80F51D2DF1A12400F33B7E /* CastomCells */ = {
+		EB6F3E332E14191E0077DEE7 /* UIColletionViewCells */ = {
 			isa = PBXGroup;
 			children = (
 				EB7E8A802E13F63400FD822A /* TrackerSectionHeaderView.swift */,
 				EB20A60F2E12EE9900695628 /* TrackerCollectionViewCell.swift */,
+			);
+			path = UIColletionViewCells;
+			sourceTree = "<group>";
+		};
+		EB6F3E342E1419300077DEE7 /* UITableViewCells */ = {
+			isa = PBXGroup;
+			children = (
 				EB80F51B2DF192BC00F33B7E /* ScheduleTableViewCell.swift */,
 				EB2D90592DEF380000A92017 /* TextFieldTableViewCell.swift */,
+			);
+			path = UITableViewCells;
+			sourceTree = "<group>";
+		};
+		EB80F51D2DF1A12400F33B7E /* CastomCells */ = {
+			isa = PBXGroup;
+			children = (
+				EB6F3E342E1419300077DEE7 /* UITableViewCells */,
+				EB6F3E332E14191E0077DEE7 /* UIColletionViewCells */,
 			);
 			path = CastomCells;
 			sourceTree = "<group>";

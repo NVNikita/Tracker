@@ -29,7 +29,8 @@ class TrackerViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupCollectionView()
-        //loadSampleData()
+        loadSampleData()
+        checkPlaceholderVisibility()
     }
     
     private func setupNavigationBar() {
@@ -47,7 +48,6 @@ class TrackerViewController: UIViewController {
         
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .compact
-        datePicker.locale = Locale(identifier: "ru_RU")
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
     }
@@ -67,7 +67,7 @@ class TrackerViewController: UIViewController {
         trackersCollectionView.backgroundColor = .clear
     }
     
-    /*private func loadSampleData() {
+    private func loadSampleData() {
         let tracker = Tracker(
             id: UUID(),
             name: "Поливать растения",
@@ -77,7 +77,7 @@ class TrackerViewController: UIViewController {
         )
         categories = [TrackerCategory(titleCategory: "Домашний уют", trackersArray: [tracker])]
         trackersCollectionView.reloadData()
-    }*/
+    }
     
     private func setupUI() {
         [placeholderImageView, placeholderLabel, searchField, trackersCollectionView].forEach {
@@ -117,13 +117,20 @@ class TrackerViewController: UIViewController {
         ])
     }
     
+    private func checkPlaceholderVisibility() {
+        let isEmpty = categories.isEmpty || categories.allSatisfy { $0.trackersArray.isEmpty }
+        placeholderImageView.isHidden = !isEmpty
+        placeholderLabel.isHidden = !isEmpty
+        trackersCollectionView.isHidden = isEmpty
+    }
+    
     @objc private func addButtonTapped() {
         let navVC = UINavigationController(rootViewController: TrackerTypeViewController())
         present(navVC, animated: true)
     }
 }
 
-extension TrackerViewController: UICollectionViewDataSource {
+extension TrackerViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return categories.count
     }

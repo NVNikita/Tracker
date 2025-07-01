@@ -10,7 +10,7 @@ import UIKit
 final class TrackerCollectionViewCell: UICollectionViewCell {
     static let identifier = "TrackerCell"
     
-    private let countDays: Int = 0
+    private var countDays: Int = 0
     private let containerView = UIView()
     private let emojiLabel = UILabel()
     private let titleLabel = UILabel()
@@ -57,6 +57,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
         plusButton.layer.cornerRadius = 17
         plusButton.clipsToBounds = true
+        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
         
         footerStackView.axis = .horizontal
         footerStackView.distribution = .fill
@@ -102,5 +103,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             plusButton.widthAnchor.constraint(equalToConstant: 34),
             plusButton.heightAnchor.constraint(equalToConstant: 34)
         ])
+    }
+    
+    @objc func plusButtonTapped() {
+        countDays += 1
     }
 }
