@@ -41,8 +41,15 @@ class TrackerViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupCollectionView()
-        loadSampleData()
+        //loadSampleData() - тестовый сценарий с уже созданным трекером 
         checkPlaceholderVisibility()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleNewTrackerNotification(_:)),
+            name: NSNotification.Name("NewTrackerCreated"),
+            object: nil
+        )
     }
     
     private func setupNavigationBar() {
@@ -230,5 +237,20 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 46)
+    }
+}
+
+extension TrackerViewController {
+    @objc private func handleNewTrackerNotification(_ notification: Notification) {
+        if let userInfo = notification.userInfo,
+           let tracker = userInfo["tracker"] as? Tracker {
+            let newCategory = TrackerCategory(
+                titleCategory: "Новая категория",
+                trackersArray: [tracker]
+            )
+            categories.append(newCategory)
+            trackersCollectionView.reloadData()
+            checkPlaceholderVisibility()
+        }
     }
 }

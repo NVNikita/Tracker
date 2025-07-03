@@ -14,12 +14,10 @@ final class CreatingTrackersViewController: UIViewController {
     private let topTableView = UITableView()
     private let bottomTableView = UITableView()
     private var selectedDays: Set<String> = []
-    
     private let categories = ["Категория", "Расписание"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupNavBar()
         activateUI()
         setupConstaints()
@@ -32,7 +30,6 @@ final class CreatingTrackersViewController: UIViewController {
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
             .foregroundColor: UIColor.black
         ]
-        
         navigationItem.setHidesBackButton(true, animated: false)
     }
     
@@ -61,7 +58,6 @@ final class CreatingTrackersViewController: UIViewController {
         cancelButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         cancelButton.backgroundColor = .white
         cancelButton.layer.cornerRadius = 16
-        cancelButton.layer.masksToBounds = true
         cancelButton.layer.borderWidth = 1
         cancelButton.layer.borderColor = UIColor.red.cgColor
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
@@ -141,27 +137,63 @@ final class CreatingTrackersViewController: UIViewController {
         }
     }
     
-    @objc private func creatingButtonTapped() {
+    private func convertDaysToWeekdays() -> [Tracker.Weekday] {
+        var weekdays: [Tracker.Weekday] = []
         
+        for day in selectedDays {
+            switch day {
+            case "Понедельник": weekdays.append(.monday)
+            case "Вторник": weekdays.append(.tuesday)
+            case "Среда": weekdays.append(.wednesday)
+            case "Четверг": weekdays.append(.thursday)
+            case "Пятница": weekdays.append(.friday)
+            case "Суббота": weekdays.append(.saturday)
+            case "Воскресенье": weekdays.append(.sunday)
+            default: break
+            }
+        }
+        
+        return weekdays
+    }
+    
+    @objc private func creatingButtonTapped() {
+        guard let textFieldCell = topTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell,
+              let trackerName = textFieldCell.textField.text?.trimmingCharacters(in: .whitespaces),
+              !trackerName.isEmpty else { return }
+        
+        guard !selectedDays.isEmpty else { return }
+        
+        let newTracker = Tracker(
+            id: UUID(),
+            name: trackerName,
+            color: .redCells,
+            emoji: "🌺",
+            schedule: convertDaysToWeekdays()
+        )
+        
+        NotificationCenter.default.post(
+            name: NSNotification.Name("NewTrackerCreated"),
+            object: nil,
+            userInfo: ["tracker": newTracker]
+        )
+        
+        presentingViewController?.presentingViewController?.dismiss(animated: true)
     }
     
     @objc private func cancelButtonTapped() {
-        dismiss(animated: true)
+        presentingViewController?.presentingViewController?.dismiss(animated: true)
     }
 }
 
 extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == topTableView {
-            return 1
-        } else {
-            return categories.count
-        }
+        tableView == topTableView ? 1 : categories.count
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == topTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TextFieldCell", for: indexPath) as! TextFieldTableViewCell
@@ -183,14 +215,7 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
                     cell.detailTextLabel?.text = daysString
                     cell.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
                     cell.detailTextLabel?.textColor = .gray
-                    cell.detailTextLabel?.numberOfLines = 0
                 }
-            }
-            
-            if indexPath.row != 0 {
-                cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-            } else {
-                cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             }
             
             return cell
@@ -198,7 +223,7 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
+        75
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -211,9 +236,7 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
                 self?.selectedDays = days
                 self?.bottomTableView.reloadRows(at: [indexPath], with: .none)
             }
-            let navVC = UINavigationController(rootViewController: scheduleVC)
-            navVC.modalPresentationStyle = .pageSheet
-            present(navVC, animated: true)
+            navigationController?.pushViewController(scheduleVC, animated: true)
         }
     }
 }

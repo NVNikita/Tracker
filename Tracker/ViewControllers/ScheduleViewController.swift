@@ -10,7 +10,6 @@ import UIKit
 final class ScheduleViewController: UIViewController {
     
     private let days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
-    
     var selectedDays: Set<String> = []
     private var readyButton = UIButton(type: .system)
     private var scheduleTable = UITableView()
@@ -18,7 +17,6 @@ final class ScheduleViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupNavBar()
         activateUI()
         activateConstaints()
@@ -31,7 +29,6 @@ final class ScheduleViewController: UIViewController {
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
             .foregroundColor: UIColor.black
         ]
-        
         navigationItem.setHidesBackButton(true, animated: false)
     }
     
@@ -54,12 +51,9 @@ final class ScheduleViewController: UIViewController {
     
     private func setupTable() {
         scheduleTable.register(ScheduleTableViewCell.self, forCellReuseIdentifier: "DayCell")
-        
         scheduleTable.isScrollEnabled = false
         scheduleTable.layer.masksToBounds = true
         scheduleTable.allowsSelection = false
-
-        
         scheduleTable.backgroundColor = .backgroundTables
         scheduleTable.layer.cornerRadius = 16
         scheduleTable.separatorStyle = .singleLine
@@ -70,20 +64,22 @@ final class ScheduleViewController: UIViewController {
     }
     
     private func activateConstaints() {
-        readyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        readyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        readyButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
-        readyButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        scheduleTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        scheduleTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        scheduleTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24).isActive = true
-        scheduleTable.heightAnchor.constraint(equalToConstant: CGFloat(days.count * 75)).isActive = true
+        NSLayoutConstraint.activate([
+            readyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            readyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            readyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            readyButton.heightAnchor.constraint(equalToConstant: 60),
+            
+            scheduleTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            scheduleTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            scheduleTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            scheduleTable.heightAnchor.constraint(equalToConstant: CGFloat(days.count * 75))
+        ])
     }
     
     @objc private func readyButtonTapped() {
         onDaysSelected?(selectedDays)
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }
 
@@ -93,15 +89,15 @@ extension ScheduleViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DayCell", for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
-        
-        cell.backgroundColor = .backgroundTables
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DayCell", for: indexPath) as? ScheduleTableViewCell else {
+            return UITableViewCell()
+        }
         
         let day = days[indexPath.row]
         cell.configure(with: day, isSelected: selectedDays.contains(day))
         
-        cell.onSwitchChanged = { [weak self] ison in
-            if ison {
+        cell.onSwitchChanged = { [weak self] isOn in
+            if isOn {
                 self?.selectedDays.insert(day)
             } else {
                 self?.selectedDays.remove(day)
@@ -110,9 +106,8 @@ extension ScheduleViewController: UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.row == days.count - 1 {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-        } else {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         }
+        
         return cell
     }
     
