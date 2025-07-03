@@ -7,12 +7,15 @@
 
 import UIKit
 
-import UIKit
-
 final class TrackerSectionHeaderView: UICollectionReusableView {
     static let identifier = "TrackerSectionHeader"
     
-    let titleLabel = UILabel()
+    let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 19, weight: .bold)
+        label.textColor = .black
+        return label
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,15 +27,14 @@ final class TrackerSectionHeaderView: UICollectionReusableView {
     }
     
     private func setupViews() {
-        titleLabel.font = .systemFont(ofSize: 19, weight: .bold)
-        titleLabel.textColor = .black
-        
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
     }
 }

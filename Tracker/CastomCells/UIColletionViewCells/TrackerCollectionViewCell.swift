@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TrackerCellDelegate: AnyObject {
+    func didTapPlusButton(cell: TrackerCollectionViewCell, tracker: Tracker, date: Date, isCompleted: Bool)
+}
+
 final class TrackerCollectionViewCell: UICollectionViewCell {
     static let identifier = "TrackerCell"
     
@@ -18,6 +22,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private let plusButton = UIButton()
     private let footerStackView = UIStackView()
     
+    weak var delegate: TrackerCellDelegate?
+    private var tracker: Tracker?
+    private var selectedDate: Date?
+    private var isCompleted: Bool = false
+    private var isFutureDate: Bool = false
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -28,13 +38,32 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with tracker: Tracker) {
+    func configure(
+        with tracker: Tracker,
+        selectedDate: Date,
+        completedDays: Int,
+        isCompleted: Bool,
+        isFutureDate: Bool
+    ) {
+        self.tracker = tracker
+        self.selectedDate = selectedDate
+        self.isCompleted = isCompleted
+        self.isFutureDate = isFutureDate
+        self.countDays = completedDays
+        
         titleLabel.text = tracker.name
         emojiLabel.text = tracker.emoji
         containerView.backgroundColor = tracker.color
         daysCountLabel.text = "\(countDays) дней"
+        
+        if isCompleted {
+            plusButton.setImage(UIImage(named: "done"), for: .normal)
+        } else {
+            plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
+        }
         plusButton.tintColor = .white
-        plusButton.backgroundColor = tracker.color
+        plusButton.backgroundColor = isCompleted ? tracker.color.withAlphaComponent(0.3) : tracker.color
+        plusButton.isUserInteractionEnabled = !isFutureDate
     }
     
     private func setupViews() {
@@ -43,7 +72,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         
         emojiLabel.backgroundColor = .white.withAlphaComponent(0.3)
         emojiLabel.layer.cornerRadius = 12
-        emojiLabel.clipsToBounds = true 
+        emojiLabel.clipsToBounds = true
         emojiLabel.textAlignment = .center
         emojiLabel.font = .systemFont(ofSize: 16)
         
@@ -54,7 +83,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         daysCountLabel.font = .systemFont(ofSize: 12, weight: .medium)
         daysCountLabel.textColor = .black
         
-        plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
         plusButton.layer.cornerRadius = 17
         plusButton.clipsToBounds = true
         plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
@@ -105,7 +133,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    @objc func plusButtonTapped() {
-        countDays += 1
+    @objc private func plusButtonTapped() {
+        guard let tracker = tracker,
+              let selectedDate = selectedDate,
+              !isFutureDate else {
+            return
+        }
+        delegate?.didTapPlusButton(cell: self, tracker: tracker, date: selectedDate, isCompleted: isCompleted)
     }
 }
