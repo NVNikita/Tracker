@@ -54,12 +54,15 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         titleLabel.text = tracker.name
         emojiLabel.text = tracker.emoji
         containerView.backgroundColor = tracker.color
-        daysCountLabel.text = "\(countDays) дней"
+        daysCountLabel.text = "\(countDays) день"
+        
+        let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
+        let plusImage = UIImage(systemName: "plus", withConfiguration: config)
         
         if isCompleted {
             plusButton.setImage(UIImage(named: "done"), for: .normal)
         } else {
-            plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            plusButton.setImage(plusImage, for: .normal)
         }
         plusButton.tintColor = .white
         plusButton.backgroundColor = isCompleted ? tracker.color.withAlphaComponent(0.3) : tracker.color
@@ -112,7 +115,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             containerView.heightAnchor.constraint(equalToConstant: 90),
-            containerView.widthAnchor.constraint(equalToConstant: 167),
             
             emojiLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
             emojiLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
@@ -126,7 +128,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             footerStackView.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 8),
             footerStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
             footerStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
-            footerStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            footerStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
             plusButton.widthAnchor.constraint(equalToConstant: 34),
             plusButton.heightAnchor.constraint(equalToConstant: 34)
