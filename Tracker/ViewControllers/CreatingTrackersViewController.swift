@@ -7,6 +7,8 @@
 
 import UIKit
 
+import UIKit
+
 final class CreatingTrackersViewController: UIViewController {
     
     private let creatingButton = UIButton(type: .system)
@@ -22,6 +24,7 @@ final class CreatingTrackersViewController: UIViewController {
         activateUI()
         setupConstaints()
         setupTables()
+        setupKeyboardDismissal()
     }
     
     private func setupNavBar() {
@@ -111,6 +114,16 @@ final class CreatingTrackersViewController: UIViewController {
         ])
     }
     
+    private func setupKeyboardDismissal() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
     private func getShortDaysString() -> String {
         if selectedDays.count == 7 {
             return "Каждый день"
@@ -157,8 +170,10 @@ final class CreatingTrackersViewController: UIViewController {
     }
     
     @objc private func creatingButtonTapped() {
-        guard let textFieldCell = topTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell,
-              let trackerName = textFieldCell.textField.text?.trimmingCharacters(in: .whitespaces),
+        dismissKeyboard()
+        
+        guard let cell = topTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell,
+              let trackerName = cell.textField.text?.trimmingCharacters(in: .whitespaces),
               !trackerName.isEmpty else { return }
         
         guard !selectedDays.isEmpty else { return }
@@ -181,6 +196,7 @@ final class CreatingTrackersViewController: UIViewController {
     }
     
     @objc private func cancelButtonTapped() {
+        dismissKeyboard()
         presentingViewController?.presentingViewController?.dismiss(animated: true)
     }
 }
@@ -200,6 +216,7 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
             cell.textField.placeholder = "Введите название трекера"
             cell.textField.font = .systemFont(ofSize: 17)
             cell.textField.textColor = .black
+            cell.textField.delegate = self
             return cell
         } else {
             let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "CategoryCell")
@@ -238,5 +255,12 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
             }
             navigationController?.pushViewController(scheduleVC, animated: true)
         }
+    }
+}
+
+extension CreatingTrackersViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

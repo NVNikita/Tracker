@@ -11,6 +11,8 @@ final class TextFieldTableViewCell: UITableViewCell {
     let textField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.returnKeyType = .done
+        textField.autocorrectionType = .no
         textField.clearButtonMode = .whileEditing
         return textField
     }()
@@ -29,9 +31,11 @@ final class TextFieldTableViewCell: UITableViewCell {
         contentView.backgroundColor = .clear
         backgroundColor = .clear
         
-        textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
-        textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16).isActive = true
-        textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16).isActive = true
-        textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
+        NSLayoutConstraint.activate([
+            textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8)
+        ])
     }
 }
