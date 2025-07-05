@@ -59,6 +59,7 @@ final class ScheduleViewController: UIViewController {
         scheduleTable.separatorStyle = .singleLine
         scheduleTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         
+        
         scheduleTable.delegate = self
         scheduleTable.dataSource = self
     }
@@ -107,7 +108,7 @@ extension ScheduleViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == days.count - 1 {
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         }
-        
+        cell.backgroundColor = .backgroundTables
         return cell
     }
     
