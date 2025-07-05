@@ -41,7 +41,6 @@ class TrackerViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupCollectionView()
-        //loadSampleData() - тестовый сценарий с уже созданным трекером 
         checkPlaceholderVisibility()
         
         NotificationCenter.default.addObserver(
@@ -67,6 +66,34 @@ class TrackerViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
     }
     
+    private func filterTrackers(for date: Date) -> [TrackerCategory] {
+        let calendar = Calendar.current
+        let weekdayNumber = calendar.component(.weekday, from: date)
+        
+        let currentWeekday: Tracker.Weekday?
+        switch weekdayNumber {
+        case 2: currentWeekday = .monday
+        case 3: currentWeekday = .tuesday
+        case 4: currentWeekday = .wednesday
+        case 5: currentWeekday = .thursday
+        case 6: currentWeekday = .friday
+        case 7: currentWeekday = .saturday
+        case 1: currentWeekday = .sunday
+        default: currentWeekday = nil
+        }
+        
+        return categories.compactMap { category in
+            let filteredTrackers = category.trackersArray.filter { tracker in
+                guard let schedule = tracker.schedule, !schedule.isEmpty else { return true }
+                return currentWeekday != nil && schedule.contains { $0 == currentWeekday }
+            }
+            return filteredTrackers.isEmpty ? nil : TrackerCategory(
+                titleCategory: category.titleCategory,
+                trackersArray: filteredTrackers
+            )
+        }
+    }
+    
     private func setupCollectionView() {
         trackersCollectionView.register(
             TrackerCollectionViewCell.self,
@@ -80,18 +107,6 @@ class TrackerViewController: UIViewController {
         trackersCollectionView.dataSource = self
         trackersCollectionView.delegate = self
         trackersCollectionView.backgroundColor = .clear
-    }
-    
-    private func loadSampleData() {
-        let tracker = Tracker(
-            id: UUID(),
-            name: "Поливать растения",
-            color: .greenCells,
-            emoji: "😪",
-            schedule: [.monday, .wednesday, .friday]
-        )
-        categories = [TrackerCategory(titleCategory: "Домашний уют", trackersArray: [tracker])]
-        trackersCollectionView.reloadData()
     }
     
     private func setupUI() {
@@ -131,7 +146,8 @@ class TrackerViewController: UIViewController {
     }
     
     private func checkPlaceholderVisibility() {
-        let isEmpty = categories.isEmpty || categories.allSatisfy { $0.trackersArray.isEmpty }
+        let filteredCategories = filterTrackers(for: currentDate)
+        let isEmpty = filteredCategories.isEmpty
         placeholderImageView.isHidden = !isEmpty
         placeholderLabel.isHidden = !isEmpty
         trackersCollectionView.isHidden = isEmpty
@@ -157,6 +173,19 @@ class TrackerViewController: UIViewController {
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
         currentDate = sender.date
     }
+    
+    @objc private func handleNewTrackerNotification(_ notification: Notification) {
+        if let userInfo = notification.userInfo,
+           let tracker = userInfo["tracker"] as? Tracker {
+            let newCategory = TrackerCategory(
+                titleCategory: "Новая категория",
+                trackersArray: [tracker]
+            )
+            categories.append(newCategory)
+            trackersCollectionView.reloadData()
+            checkPlaceholderVisibility()
+        }
+    }
 }
 
 extension TrackerViewController: TrackerCellDelegate {
@@ -177,16 +206,17 @@ extension TrackerViewController: TrackerCellDelegate {
 
 extension TrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        categories.count
+        filterTrackers(for: currentDate).count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        categories[section].trackersArray.count
+        filterTrackers(for: currentDate)[section].trackersArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! TrackerCollectionViewCell
-        let tracker = categories[indexPath.section].trackersArray[indexPath.row]
+        let filteredCategories = filterTrackers(for: currentDate)
+        let tracker = filteredCategories[indexPath.section].trackersArray[indexPath.row]
         let isCompleted = isTrackerCompletedToday(tracker, date: currentDate)
         let completedDays = completedDaysCount(for: tracker)
         let futureDate = isFutureDate(currentDate)
@@ -213,7 +243,7 @@ extension TrackerViewController: UICollectionViewDataSource {
             for: indexPath
         ) as! TrackerSectionHeaderView
         
-        header.titleLabel.text = categories[indexPath.section].titleCategory
+        header.titleLabel.text = filterTrackers(for: currentDate)[indexPath.section].titleCategory
         return header
     }
 }
@@ -237,20 +267,5 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 46)
-    }
-}
-
-extension TrackerViewController {
-    @objc private func handleNewTrackerNotification(_ notification: Notification) {
-        if let userInfo = notification.userInfo,
-           let tracker = userInfo["tracker"] as? Tracker {
-            let newCategory = TrackerCategory(
-                titleCategory: "Новая категория",
-                trackersArray: [tracker]
-            )
-            categories.append(newCategory)
-            trackersCollectionView.reloadData()
-            checkPlaceholderVisibility()
-        }
     }
 }

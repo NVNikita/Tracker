@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UIKit
-
 final class CreatingTrackersViewController: UIViewController {
     
     private let creatingButton = UIButton(type: .system)
