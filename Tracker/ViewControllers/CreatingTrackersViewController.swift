@@ -15,6 +15,11 @@ final class CreatingTrackersViewController: UIViewController {
     private let bottomTableView = UITableView()
     private var selectedDays: Set<String> = []
     private let categories = ["Категория", "Расписание"]
+    private let emojiArray = ["🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶",
+                              "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝", "😪"]
+    private let emojiCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +28,7 @@ final class CreatingTrackersViewController: UIViewController {
         setupConstaints()
         setupTables()
         setupKeyboardDismissal()
+        setupCollections()
     }
     
     private func setupNavBar() {
@@ -41,11 +47,13 @@ final class CreatingTrackersViewController: UIViewController {
         view.addSubview(bottomTableView)
         view.addSubview(creatingButton)
         view.addSubview(cancelButton)
+        view.addSubview(emojiCollectionView)
         
         topTableView.translatesAutoresizingMaskIntoConstraints = false
         bottomTableView.translatesAutoresizingMaskIntoConstraints = false
         creatingButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        emojiCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         creatingButton.setTitle("Создать", for: .normal)
         creatingButton.setTitleColor(.white, for: .normal)
@@ -88,6 +96,16 @@ final class CreatingTrackersViewController: UIViewController {
         bottomTableView.layer.masksToBounds = true
     }
     
+    private func setupCollections() {
+        emojiCollectionView.delegate = self
+        emojiCollectionView.dataSource = self
+        
+        emojiCollectionView.allowsMultipleSelection = false
+        
+        emojiCollectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        
+    }
+    
     private func setupConstaints() {
         NSLayoutConstraint.activate([
             topTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
@@ -108,7 +126,12 @@ final class CreatingTrackersViewController: UIViewController {
             creatingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             creatingButton.bottomAnchor.constraint(equalTo: cancelButton.bottomAnchor),
             creatingButton.heightAnchor.constraint(equalToConstant: 60),
-            creatingButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 8)
+            creatingButton.leadingAnchor.constraint(equalTo: cancelButton.trailingAnchor, constant: 8),
+            
+            emojiCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            emojiCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            emojiCollectionView.topAnchor.constraint(equalTo: bottomTableView.bottomAnchor, constant: 50),
+            emojiCollectionView.heightAnchor.constraint(equalToConstant: 204)
         ])
     }
     
@@ -260,5 +283,53 @@ extension CreatingTrackersViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+extension CreatingTrackersViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        emojiArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = emojiCollectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! EmojiCollectionViewCell
+        cell.emojiLabel.text = emojiArray[indexPath.row]
+        
+        cell.layer.masksToBounds = true
+        cell.layer.cornerRadius = 16
+        
+        return cell
+    }
+    
+    
+}
+
+extension CreatingTrackersViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = emojiCollectionView.cellForItem(at: indexPath) as! EmojiCollectionViewCell
+        cell.backgroundColor = .lightGrayYP
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = emojiCollectionView.cellForItem(at: indexPath) as! EmojiCollectionViewCell
+        cell.backgroundColor = .clear
+    }
+}
+
+extension CreatingTrackersViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 52, height: 52)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 24, left: 18, bottom: 24, right: 18)
     }
 }
