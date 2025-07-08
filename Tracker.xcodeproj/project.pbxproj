@@ -26,6 +26,7 @@
 		EBE7BC012D920B7F00006499 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE7BC002D920B7F00006499 /* SceneDelegate.swift */; };
 		EBE7BC082D920B8100006499 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBE7BC072D920B8100006499 /* Assets.xcassets */; };
 		EBE7BC0B2D920B8100006499 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = EBE7BC0A2D920B8100006499 /* Base */; };
+		EBFF09A12E1D2EFE00803D97 /* CreatingCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF09A02E1D2EFD00803D97 /* CreatingCollectionHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		EBE7BC072D920B8100006499 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EBE7BC0A2D920B8100006499 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EBE7BC0C2D920B8100006499 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EBFF09A02E1D2EFD00803D97 /* CreatingCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingCollectionHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 		EB6F3E332E14191E0077DEE7 /* UIColletionViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				EBFF09A02E1D2EFD00803D97 /* CreatingCollectionHeaderView.swift */,
 				EB4B67F52E1ADEC90030F796 /* ColorCollectionViewCell.swift */,
 				EB4B67F32E1ADEA50030F796 /* EmojiCollectionViewCell.swift */,
 				EB7E8A802E13F63400FD822A /* TrackerSectionHeaderView.swift */,
@@ -228,6 +231,7 @@
 				EBE7BBFF2D920B7F00006499 /* AppDelegate.swift in Sources */,
 				EB70A40C2DEA5E5C00E5F441 /* CreatingTrackersViewController.swift in Sources */,
 				EB2D905A2DEF380000A92017 /* TextFieldTableViewCell.swift in Sources */,
+				EBFF09A12E1D2EFE00803D97 /* CreatingCollectionHeaderView.swift in Sources */,
 				EB9DD2D22D9469A400B4AD5F /* TrackerViewController.swift in Sources */,
 				EBE7BC012D920B7F00006499 /* SceneDelegate.swift in Sources */,
 				EB9DD2D42D9469C400B4AD5F /* StatisticViewController.swift in Sources */,

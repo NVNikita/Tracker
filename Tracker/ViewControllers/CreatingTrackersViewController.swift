@@ -9,6 +9,8 @@ import UIKit
 
 final class CreatingTrackersViewController: UIViewController {
     
+    private var selectedEmoji: String?
+    private var selectedColor: UIColor?
     private let creatingButton = UIButton(type: .system)
     private let cancelButton = UIButton(type: .system)
     private let topTableView = UITableView()
@@ -17,7 +19,14 @@ final class CreatingTrackersViewController: UIViewController {
     private let categories = ["Категория", "Расписание"]
     private let emojiArray = ["🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶",
                               "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝", "😪"]
+    private let colorsCells: [UIColor] = [.redYP, .lightOrangeYP, .blueYP, .purpleYP, .greenYP, .darkPinkYP,
+                                          .lightPinkYP, .lightBlueYP, .lightGreenYP, .darkBlueYP, .orangeYP, .pinkYP,
+                                          .beigeYP, .coralBlueYP, .darkPurpleYP, .fuchsiaYP, .lightPurpleYP, .emeraldYP]
     private let emojiCollectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: UICollectionViewFlowLayout())
+    
+    private let colorsCollectionsView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout())
     
@@ -48,12 +57,14 @@ final class CreatingTrackersViewController: UIViewController {
         view.addSubview(creatingButton)
         view.addSubview(cancelButton)
         view.addSubview(emojiCollectionView)
+        view.addSubview(colorsCollectionsView)
         
         topTableView.translatesAutoresizingMaskIntoConstraints = false
         bottomTableView.translatesAutoresizingMaskIntoConstraints = false
         creatingButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         emojiCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        colorsCollectionsView.translatesAutoresizingMaskIntoConstraints = false
         
         creatingButton.setTitle("Создать", for: .normal)
         creatingButton.setTitleColor(.white, for: .normal)
@@ -99,11 +110,26 @@ final class CreatingTrackersViewController: UIViewController {
     private func setupCollections() {
         emojiCollectionView.delegate = self
         emojiCollectionView.dataSource = self
+        colorsCollectionsView.delegate = self
+        colorsCollectionsView.dataSource = self
         
         emojiCollectionView.allowsMultipleSelection = false
+        colorsCollectionsView.allowsMultipleSelection = false
         
-        emojiCollectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        emojiCollectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: "emojiCell")
+        colorsCollectionsView.register(ColorCollectionViewCell.self, forCellWithReuseIdentifier: "colorCell")
         
+        emojiCollectionView.register(
+            CreatingCollectionHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: "header"
+        )
+        
+        colorsCollectionsView.register(
+            CreatingCollectionHeaderView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: "header"
+        )
     }
     
     private func setupConstaints() {
@@ -131,7 +157,12 @@ final class CreatingTrackersViewController: UIViewController {
             emojiCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             emojiCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             emojiCollectionView.topAnchor.constraint(equalTo: bottomTableView.bottomAnchor, constant: 50),
-            emojiCollectionView.heightAnchor.constraint(equalToConstant: 204)
+            emojiCollectionView.heightAnchor.constraint(equalToConstant: 204),
+            
+            colorsCollectionsView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            colorsCollectionsView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            colorsCollectionsView.topAnchor.constraint(equalTo: emojiCollectionView.bottomAnchor, constant: 34),
+            colorsCollectionsView.heightAnchor.constraint(equalToConstant: 204)
         ])
     }
     
@@ -256,6 +287,10 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
                 }
             }
             
+            if indexPath.row == 1 {
+                cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+            }
+            
             return cell
         }
     }
@@ -288,26 +323,55 @@ extension CreatingTrackersViewController: UITextFieldDelegate {
 
 extension CreatingTrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        emojiArray.count
+        if collectionView == emojiCollectionView {
+            return emojiArray.count
+        } else {
+            return colorsCells.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = emojiCollectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! EmojiCollectionViewCell
-        cell.emojiLabel.text = emojiArray[indexPath.row]
-        
-        cell.layer.masksToBounds = true
-        cell.layer.cornerRadius = 16
-        
-        return cell
+        if collectionView == emojiCollectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "emojiCell", for: indexPath) as! EmojiCollectionViewCell
+            cell.emojiLabel.text = emojiArray[indexPath.row]
+            cell.backgroundColor = selectedEmoji == emojiArray[indexPath.row] ? .lightGrayYP : .clear
+            cell.layer.cornerRadius = 16
+            cell.layer.masksToBounds = true
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as! ColorCollectionViewCell
+            let color = colorsCells[indexPath.row]
+
+            cell.configure(with: color, isSelected: selectedColor == color)
+            return cell
+        }
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: "header",
+            for: indexPath
+        ) as! CreatingCollectionHeaderView
+        
+        if collectionView == emojiCollectionView {
+            header.titleLabel.text = "Emoji"
+        } else {
+            header.titleLabel.text = "Цвет"
+        }
+        
+        return header
+    }
 }
 
 extension CreatingTrackersViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = emojiCollectionView.cellForItem(at: indexPath) as! EmojiCollectionViewCell
-        cell.backgroundColor = .lightGrayYP
+        if collectionView == emojiCollectionView {
+            selectedEmoji = emojiArray[indexPath.row]
+        } else {
+            selectedColor = colorsCells[indexPath.row]
+        }
+        collectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -330,6 +394,10 @@ extension CreatingTrackersViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 24, left: 18, bottom: 24, right: 18)
+        return UIEdgeInsets(top: 24, left: 18, bottom: 0, right: 18)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 20)
     }
 }
