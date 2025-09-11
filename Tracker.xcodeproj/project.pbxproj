@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EB02EAA12E72E23700F07AD7 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB02EAA02E72E22A00F07AD7 /* DataManager.swift */; };
+		EB02EAA52E73412800F07AD7 /* DataManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB02EAA42E73411F00F07AD7 /* DataManagerDelegate.swift */; };
 		EB18C7372DE90AEC00F2AB56 /* TrackerTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB18C7362DE90AEC00F2AB56 /* TrackerTypeViewController.swift */; };
 		EB20A6102E12EEB300695628 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB20A60F2E12EE9900695628 /* TrackerCollectionViewCell.swift */; };
 		EB2D905A2DEF380000A92017 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2D90592DEF380000A92017 /* TextFieldTableViewCell.swift */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		EB02EAA02E72E22A00F07AD7 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		EB02EAA42E73411F00F07AD7 /* DataManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerDelegate.swift; sourceTree = "<group>"; };
 		EB18C7362DE90AEC00F2AB56 /* TrackerTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeViewController.swift; sourceTree = "<group>"; };
 		EB20A60F2E12EE9900695628 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		EB2D90592DEF380000A92017 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 		EB39B3572E6F78230095648E /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				EB02EAA42E73411F00F07AD7 /* DataManagerDelegate.swift */,
 				EB02EAA02E72E22A00F07AD7 /* DataManager.swift */,
 				EB55B9842E71E01800229E4B /* CoreDataStore */,
 				EB39B3582E6F783A0095648E /* Extensions */,
@@ -290,6 +293,7 @@
 				EBE7BC012D920B7F00006499 /* SceneDelegate.swift in Sources */,
 				EB55B98A2E71E41A00229E4B /* TrackerRecordStore.swift in Sources */,
 				EB55B9882E71E05200229E4B /* TrackerCategoryStore.swift in Sources */,
+				EB02EAA52E73412800F07AD7 /* DataManagerDelegate.swift in Sources */,
 				EB9DD2D42D9469C400B4AD5F /* StatisticViewController.swift in Sources */,
 				EB18C7372DE90AEC00F2AB56 /* TrackerTypeViewController.swift in Sources */,
 				EB528B372DAAE2F20036FA05 /* TrackerCategory.swift in Sources */,

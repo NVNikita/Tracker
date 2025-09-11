@@ -9,6 +9,7 @@ import UIKit
 
 class TrackerViewController: UIViewController {
     
+    
     private var categories: [TrackerCategory] = [] {
         didSet {
             trackersCollectionView.reloadData()
@@ -23,6 +24,7 @@ class TrackerViewController: UIViewController {
         }
     }
     
+    private let dataManager = DataManager.shared
     private let placeholderImageView = UIImageView(image: UIImage(named: "trackerLogo"))
     private let placeholderLabel = UILabel()
     private let searchField = UISearchTextField()
@@ -48,18 +50,32 @@ class TrackerViewController: UIViewController {
         setupCollectionView()
         loadData()
         
+        DataManager.shared.delegate = self
+        
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleNewTrackerNotification(_:)),
             name: NSNotification.Name("NewTrackerCreated"),
             object: nil
         )
+        
+        setupDataObservers()
+    }
+    
+    private func setupDataObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleDataChangeNotification(_:)),
+            name: NSNotification.Name("TrackerDataChanged"),
+            object: nil
+        )
     }
     
     private func loadData() {
-        categories = DataManager.shared.fetchCategories()
-        let records = DataManager.shared.fetchRecords()
-        completedTrackers = Set(records)
+        categories = dataManager.fetchCategories()
+        completedTrackers = Set(dataManager.fetchRecords())
+        trackersCollectionView.reloadData()
+        checkPlaceholderVisibility()
     }
     
     private func setupNavigationBar() {
@@ -165,11 +181,11 @@ class TrackerViewController: UIViewController {
     }
     
     private func isTrackerCompletedToday(_ tracker: Tracker, date: Date) -> Bool {
-        return DataManager.shared.isTrackerCompleted(tracker, on: date)
+        return dataManager.isTrackerCompleted(tracker, on: date)
     }
     
     private func completedDaysCount(for tracker: Tracker) -> Int {
-        return DataManager.shared.completedDaysCount(for: tracker)
+        return dataManager.completedDaysCount(for: tracker)
     }
     
     private func isFutureDate(_ date: Date) -> Bool {
@@ -188,14 +204,21 @@ class TrackerViewController: UIViewController {
     @objc private func handleNewTrackerNotification(_ notification: Notification) {
         loadData()
     }
+    
+    @objc private func handleDataChangeNotification(_ notification: Notification) {
+        loadData()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension TrackerViewController: TrackerCellDelegate {
     func didTapPlusButton(cell: TrackerCollectionViewCell, tracker: Tracker, date: Date, isCompleted: Bool) {
         guard !isFutureDate(date) else { return }
         
-        DataManager.shared.toggleTrackerCompletion(tracker, on: date)
-        
+        dataManager.toggleTrackerCompletion(tracker, on: date)
         loadData()
     }
 }
@@ -263,5 +286,37 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 46)
+    }
+}
+
+extension TrackerViewController: DataManagerDelegate {
+    func didUpdateTrackers(_ changes: [DataManagerChange]) {
+
+        trackersCollectionView.performBatchUpdates {
+            for change in changes {
+                switch change {
+                case .insert(let indexPath):
+                    trackersCollectionView.insertItems(at: [indexPath])
+                case .delete(let indexPath):
+                    trackersCollectionView.deleteItems(at: [indexPath])
+                case .update(let indexPath):
+                    trackersCollectionView.reloadItems(at: [indexPath])
+                case .move(let fromIndexPath, let toIndexPath):
+                    trackersCollectionView.moveItem(at: fromIndexPath, to: toIndexPath)
+                case .insertSection(let section):
+                    trackersCollectionView.insertSections(IndexSet(integer: section))
+                case .deleteSection(let section):
+                    trackersCollectionView.deleteSections(IndexSet(integer: section))
+                }
+            }
+        }
+    }
+    
+    func didUpdateCategories(_ changes: [DataManagerChange]) {
+        loadData()
+    }
+    
+    func didUpdateRecords(_ changes: [DataManagerChange]) {
+        trackersCollectionView.reloadData()
     }
 }

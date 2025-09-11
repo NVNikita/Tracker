@@ -6,9 +6,12 @@
 //
 
 import CoreData
+import UIKit
 
-final class DataManager {
+final class DataManager: NSObject {
     static let shared = DataManager()
+    
+    weak var delegate: DataManagerDelegate?
     
     private lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "TrackerCoreData")
@@ -25,21 +28,31 @@ final class DataManager {
     }
     
     private lazy var trackerStore: TrackerStore = {
-        return TrackerStore(context: context)
+        let store = TrackerStore(context: context)
+        store.delegate = self
+        return store
     }()
     
     private lazy var categoryStore: TrackerCategoryStore = {
-        return TrackerCategoryStore(context: context)
+        let store = TrackerCategoryStore(context: context)
+        store.delegate = self
+        return store
     }()
     
     private lazy var recordStore: TrackerRecordStore = {
-        return TrackerRecordStore(context: context)
+        let store = TrackerRecordStore(context: context)
+        store.delegate = self
+        return store
     }()
     
-    private init() {}
+    private override init() {}
     
     func fetchCategories() -> [TrackerCategory] {
         return categoryStore.fetchCategories()
+    }
+    
+    func fetchTrackers() -> [Tracker] {
+        return trackerStore.fetchTrackers()
     }
     
     func fetchRecords() -> [TrackerRecord] {
@@ -69,8 +82,6 @@ final class DataManager {
             categoryCoreData.addToTrackers(trackerCoreData)
             
             try context.save()
-            
-            NotificationCenter.default.post(name: NSNotification.Name("TrackersUpdated"), object: nil)
             
         } catch {
             print("Failed to add tracker: \(error)")
@@ -111,5 +122,23 @@ final class DataManager {
             print("Failed to get completed days count: \(error)")
             return 0
         }
+    }
+}
+
+extension DataManager: TrackerStoreDelegate {
+    func trackerStoreDidChangeContent(_ changes: [DataManagerChange]) {
+        delegate?.didUpdateTrackers(changes)
+    }
+}
+
+extension DataManager: TrackerCategoryStoreDelegate {
+    func trackerCategoryStoreDidChangeContent(_ changes: [DataManagerChange]) {
+        delegate?.didUpdateCategories(changes)
+    }
+}
+
+extension DataManager: TrackerRecordStoreDelegate {
+    func trackerRecordStoreDidChangeContent(_ changes: [DataManagerChange]) {
+        delegate?.didUpdateRecords(changes)
     }
 }
