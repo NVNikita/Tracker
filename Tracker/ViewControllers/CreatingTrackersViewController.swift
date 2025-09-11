@@ -16,6 +16,7 @@ final class CreatingTrackersViewController: UIViewController {
     private let topTableView = UITableView()
     private let bottomTableView = UITableView()
     private var selectedDays: Set<String> = []
+    private var selectedCategory: String = "Новая категория"
     private let categories = ["Категория", "Расписание"]
     private let emojiArray = ["🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶",
                               "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝", "😪"]
@@ -257,18 +258,23 @@ final class CreatingTrackersViewController: UIViewController {
         
         guard !selectedDays.isEmpty else { return }
         
+        guard let selectedColor else { return }
+        
+        guard let selectedEmoji else { return }
+        
         let newTracker = Tracker(
             id: UUID(),
             name: trackerName,
-            color: .redCells,
-            emoji: "🌺",
+            color: selectedColor,
+            emoji: selectedEmoji,
             schedule: convertDaysToWeekdays()
         )
         
+        DataManager.shared.addTracker(newTracker, to: selectedCategory)
+        
         NotificationCenter.default.post(
             name: NSNotification.Name("NewTrackerCreated"),
-            object: nil,
-            userInfo: ["tracker": newTracker]
+            object: nil
         )
         
         presentingViewController?.presentingViewController?.dismiss(animated: true)

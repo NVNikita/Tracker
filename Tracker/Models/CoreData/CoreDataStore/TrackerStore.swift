@@ -27,7 +27,7 @@ final class TrackerStore {
     }
     
     func addTracker(_ tracker: Tracker) throws {
-        let trackerCoreData = TrackerCoreData.create(from: tracker, context: context)
+        _ = TrackerCoreData.create(from: tracker, context: context)
         try context.save()
     }
     

@@ -27,7 +27,7 @@ final class TrackerCategoryStore {
     }
     
     func addCategory(_ category: TrackerCategory) throws {
-        let categoryCoreData = TrackerCategoryCoreData.create(from: category, context: context)
+        _ = TrackerCategoryCoreData.create(from: category, context: context)
         try context.save()
     }
     

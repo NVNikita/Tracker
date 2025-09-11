@@ -26,7 +26,7 @@ final class TrackerRecordStore {
     }
     
     func addRecord(_ record: TrackerRecord) throws {
-        let recordCoreData = TrackerRecordCoreData.create(from: record, context: context)
+        _ = TrackerRecordCoreData.create(from: record, context: context)
         try context.save()
     }
     

@@ -9,12 +9,17 @@ import UIKit
 
 class TrackerViewController: UIViewController {
     
-    var categories: [TrackerCategory] = []
-    private var completedTrackers = Set<TrackerRecord>()
-    private var currentDate = Date() {
+    private var categories: [TrackerCategory] = [] {
         didSet {
             trackersCollectionView.reloadData()
             checkPlaceholderVisibility()
+        }
+    }
+    private var completedTrackers: Set<TrackerRecord> = []
+    
+    private var currentDate = Date() {
+        didSet {
+            loadData()
         }
     }
     
@@ -41,7 +46,7 @@ class TrackerViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupCollectionView()
-        checkPlaceholderVisibility()
+        loadData()
         
         NotificationCenter.default.addObserver(
             self,
@@ -49,6 +54,12 @@ class TrackerViewController: UIViewController {
             name: NSNotification.Name("NewTrackerCreated"),
             object: nil
         )
+    }
+    
+    private func loadData() {
+        categories = DataManager.shared.fetchCategories()
+        let records = DataManager.shared.fetchRecords()
+        completedTrackers = Set(records)
     }
     
     private func setupNavigationBar() {
@@ -154,11 +165,11 @@ class TrackerViewController: UIViewController {
     }
     
     private func isTrackerCompletedToday(_ tracker: Tracker, date: Date) -> Bool {
-        completedTrackers.contains { $0.id == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: date) }
+        return DataManager.shared.isTrackerCompleted(tracker, on: date)
     }
     
     private func completedDaysCount(for tracker: Tracker) -> Int {
-        completedTrackers.filter { $0.id == tracker.id }.count
+        return DataManager.shared.completedDaysCount(for: tracker)
     }
     
     private func isFutureDate(_ date: Date) -> Bool {
@@ -175,16 +186,7 @@ class TrackerViewController: UIViewController {
     }
     
     @objc private func handleNewTrackerNotification(_ notification: Notification) {
-        if let userInfo = notification.userInfo,
-           let tracker = userInfo["tracker"] as? Tracker {
-            let newCategory = TrackerCategory(
-                titleCategory: "Новая категория",
-                trackersArray: [tracker]
-            )
-            categories.append(newCategory)
-            trackersCollectionView.reloadData()
-            checkPlaceholderVisibility()
-        }
+        loadData()
     }
 }
 
@@ -192,15 +194,9 @@ extension TrackerViewController: TrackerCellDelegate {
     func didTapPlusButton(cell: TrackerCollectionViewCell, tracker: Tracker, date: Date, isCompleted: Bool) {
         guard !isFutureDate(date) else { return }
         
-        let record = TrackerRecord(id: tracker.id, date: date)
+        DataManager.shared.toggleTrackerCompletion(tracker, on: date)
         
-        if isCompleted {
-            completedTrackers.remove(record)
-        } else {
-            completedTrackers.insert(record)
-        }
-        
-        trackersCollectionView.reloadData()
+        loadData()
     }
 }
 
