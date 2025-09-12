@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import UIKit
 
 protocol TrackerCategoryStoreDelegate: AnyObject {
     func trackerCategoryStoreDidChangeContent(_ changes: [DataManagerChange])
@@ -141,5 +142,32 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
         if !changes.isEmpty {
             delegate?.trackerCategoryStoreDidChangeContent(changes)
         }
+    }
+}
+
+extension TrackerCategoryCoreData {
+    func toTrackerCategory() -> TrackerCategory? {
+        guard let title = titleCategory else { return nil }
+        
+        let trackersArray = (trackers?.allObjects as? [TrackerCoreData])?
+            .compactMap { $0.toTracker() } ?? []
+        
+        return TrackerCategory(
+            titleCategory: title,
+            trackersArray: trackersArray
+        )
+    }
+    
+    static func create(from category: TrackerCategory, context: NSManagedObjectContext) -> TrackerCategoryCoreData {
+        let categoryCoreData = TrackerCategoryCoreData(context: context)
+        categoryCoreData.titleCategory = category.titleCategory
+        
+        let trackersCoreData = category.trackersArray.map { tracker in
+            TrackerCoreData.create(from: tracker, context: context)
+        }
+        
+        categoryCoreData.trackers = NSSet(array: trackersCoreData)
+        
+        return categoryCoreData
     }
 }

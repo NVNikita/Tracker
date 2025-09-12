@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import UIKit
 
 protocol TrackerRecordStoreDelegate: AnyObject {
     func trackerRecordStoreDidChangeContent(_ changes: [DataManagerChange])
@@ -145,5 +146,19 @@ extension TrackerRecordStore: NSFetchedResultsControllerDelegate {
         if !changes.isEmpty {
             delegate?.trackerRecordStoreDidChangeContent(changes)
         }
+    }
+}
+
+extension TrackerRecordCoreData {
+    func toTrackerRecord() -> TrackerRecord? {
+        guard let id = id, let date = date else { return nil }
+        return TrackerRecord(id: id, date: date)
+    }
+    
+    static func create(from record: TrackerRecord, context: NSManagedObjectContext) -> TrackerRecordCoreData {
+        let recordCoreData = TrackerRecordCoreData(context: context)
+        recordCoreData.id = record.id
+        recordCoreData.date = record.date
+        return recordCoreData
     }
 }
