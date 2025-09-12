@@ -272,11 +272,6 @@ final class CreatingTrackersViewController: UIViewController {
         
         DataManager.shared.addTracker(newTracker, to: selectedCategory)
         
-        NotificationCenter.default.post(
-            name: NSNotification.Name("NewTrackerCreated"),
-            object: nil
-        )
-        
         presentingViewController?.presentingViewController?.dismiss(animated: true)
     }
     

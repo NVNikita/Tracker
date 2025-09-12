@@ -52,23 +52,7 @@ class TrackerViewController: UIViewController {
         
         DataManager.shared.delegate = self
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleNewTrackerNotification(_:)),
-            name: NSNotification.Name("NewTrackerCreated"),
-            object: nil
-        )
-        
-        setupDataObservers()
-    }
-    
-    private func setupDataObservers() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleDataChangeNotification(_:)),
-            name: NSNotification.Name("TrackerDataChanged"),
-            object: nil
-        )
+        loadData()
     }
     
     private func loadData() {
@@ -291,25 +275,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
 
 extension TrackerViewController: DataManagerDelegate {
     func didUpdateTrackers(_ changes: [DataManagerChange]) {
-
-        trackersCollectionView.performBatchUpdates {
-            for change in changes {
-                switch change {
-                case .insert(let indexPath):
-                    trackersCollectionView.insertItems(at: [indexPath])
-                case .delete(let indexPath):
-                    trackersCollectionView.deleteItems(at: [indexPath])
-                case .update(let indexPath):
-                    trackersCollectionView.reloadItems(at: [indexPath])
-                case .move(let fromIndexPath, let toIndexPath):
-                    trackersCollectionView.moveItem(at: fromIndexPath, to: toIndexPath)
-                case .insertSection(let section):
-                    trackersCollectionView.insertSections(IndexSet(integer: section))
-                case .deleteSection(let section):
-                    trackersCollectionView.deleteSections(IndexSet(integer: section))
-                }
-            }
-        }
+        loadData()
     }
     
     func didUpdateCategories(_ changes: [DataManagerChange]) {

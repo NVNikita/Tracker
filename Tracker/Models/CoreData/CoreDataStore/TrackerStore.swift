@@ -84,9 +84,14 @@ final class TrackerStore: NSObject {
                 trackerCoreData.colorData = colorData
             }
             
-            if let schedule = tracker.schedule,
-               let scheduleData = try? NSKeyedArchiver.archivedData(withRootObject: schedule, requiringSecureCoding: false) {
-                trackerCoreData.schedule = scheduleData
+            // Обновляем расписание
+            if let schedule = tracker.schedule {
+                let rawValues = schedule.map { $0.rawValue }
+                if let scheduleData = try? NSKeyedArchiver.archivedData(withRootObject: rawValues, requiringSecureCoding: false) {
+                    trackerCoreData.schedule = scheduleData
+                }
+            } else {
+                trackerCoreData.schedule = nil
             }
             
             try context.save()
@@ -178,10 +183,15 @@ extension TrackerCoreData {
               let colorData = colorData else {
             return nil
         }
+        var schedule: [Tracker.Weekday]? = nil
         
-        var schedule: [Tracker.Weekday]?
         if let scheduleData = self.schedule {
-            schedule = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSArray.self, from: scheduleData) as? [Tracker.Weekday]
+            if let rawValues = try? NSKeyedUnarchiver.unarchivedObject(
+                ofClasses: [NSArray.self, NSNumber.self],
+                from: scheduleData
+            ) as? [Int] {
+                schedule = rawValues.compactMap { Tracker.Weekday(rawValue: $0) }
+            }
         }
         
         guard let color = try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIColor.self, from: colorData) else {
@@ -207,9 +217,11 @@ extension TrackerCoreData {
             trackerCoreData.colorData = colorData
         }
         
-        if let schedule = tracker.schedule,
-           let scheduleData = try? NSKeyedArchiver.archivedData(withRootObject: schedule, requiringSecureCoding: false) {
-            trackerCoreData.schedule = scheduleData
+        if let schedule = tracker.schedule {
+            let rawValues = schedule.map { $0.rawValue }
+            if let scheduleData = try? NSKeyedArchiver.archivedData(withRootObject: rawValues, requiringSecureCoding: false) {
+                trackerCoreData.schedule = scheduleData
+            }
         }
         
         return trackerCoreData
