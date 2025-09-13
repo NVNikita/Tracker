@@ -11,7 +11,7 @@ import UIKit
 
 extension UIColor {
     static var backgroundTables: UIColor {
-        return UIColor(red: 0.97, green: 0.97, blue: 0.95, alpha: 1.0)
+        return UIColor(red: 0.90, green: 0.91, blue: 0.92, alpha: 0.3)
     }
     
     static var backgroundView: UIColor {
@@ -19,7 +19,7 @@ extension UIColor {
     }
     
     static var grayCreatingButton: UIColor {
-        return UIColor(red: 0.68, green: 0.68, blue: 0.70, alpha: 1.0)
+        return UIColor(red: 0.68, green: 0.69, blue: 0.71, alpha: 1.0)
     }
     
     static var lightGrayYP: UIColor {

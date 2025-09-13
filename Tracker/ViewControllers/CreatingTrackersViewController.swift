@@ -51,6 +51,7 @@ final class CreatingTrackersViewController: UIViewController {
         setupTables()
         setupKeyboardDismissal()
         setupCollections()
+        updateCreatingButtonState()
     }
     
     private func setupNavBar() {
@@ -88,6 +89,7 @@ final class CreatingTrackersViewController: UIViewController {
         creatingButton.backgroundColor = .grayCreatingButton
         creatingButton.layer.cornerRadius = 16
         creatingButton.addTarget(self, action: #selector(creatingButtonTapped), for: .touchUpInside)
+        creatingButton.isEnabled = false
         
         cancelButton.setTitle("Отменить", for: .normal)
         cancelButton.setTitleColor(.red, for: .normal)
@@ -249,7 +251,37 @@ final class CreatingTrackersViewController: UIViewController {
         return weekdays
     }
     
+    private func updateCreatingButtonState() {
+        let isFormValid = isFormComplete()
+        creatingButton.isEnabled = isFormValid
+        creatingButton.backgroundColor = isFormValid ? .black : .grayCreatingButton
+    }
+    
+    private func isFormComplete() -> Bool {
+        guard let cell = topTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell,
+              let trackerName = cell.textField.text?.trimmingCharacters(in: .whitespaces),
+              !trackerName.isEmpty else {
+            return false
+        }
+        
+        guard !selectedDays.isEmpty else {
+            return false
+        }
+        
+        guard selectedColor != nil else {
+            return false
+        }
+        
+        guard selectedEmoji != nil else {
+            return false
+        }
+        
+        return true
+    }
+    
     @objc private func creatingButtonTapped() {
+        guard isFormComplete() else { return }
+        
         dismissKeyboard()
         
         guard let cell = topTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell,
@@ -336,6 +368,7 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
             scheduleVC.onDaysSelected = { [weak self] days in
                 self?.selectedDays = days
                 self?.bottomTableView.reloadRows(at: [indexPath], with: .none)
+                self?.updateCreatingButtonState()
             }
             navigationController?.pushViewController(scheduleVC, animated: true)
         }
@@ -346,6 +379,14 @@ extension CreatingTrackersViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        updateCreatingButtonState()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateCreatingButtonState()
     }
 }
 
@@ -400,6 +441,7 @@ extension CreatingTrackersViewController: UICollectionViewDelegate {
             selectedColor = colorsCells[indexPath.row]
         }
         collectionView.reloadData()
+        updateCreatingButtonState()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
