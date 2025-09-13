@@ -9,15 +9,22 @@ import UIKit
 
 class TrackerViewController: UIViewController {
     
-    var categories: [TrackerCategory] = []
-    private var completedTrackers = Set<TrackerRecord>()
-    private var currentDate = Date() {
+    
+    private var categories: [TrackerCategory] = [] {
         didSet {
             trackersCollectionView.reloadData()
             checkPlaceholderVisibility()
         }
     }
+    private var completedTrackers: Set<TrackerRecord> = []
     
+    private var currentDate = Date() {
+        didSet {
+            loadData()
+        }
+    }
+    
+    private let dataManager = DataManager.shared
     private let placeholderImageView = UIImageView(image: UIImage(named: "trackerLogo"))
     private let placeholderLabel = UILabel()
     private let searchField = UISearchTextField()
@@ -41,14 +48,18 @@ class TrackerViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupCollectionView()
-        checkPlaceholderVisibility()
+        loadData()
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleNewTrackerNotification(_:)),
-            name: NSNotification.Name("NewTrackerCreated"),
-            object: nil
-        )
+        DataManager.shared.delegate = self
+        
+        loadData()
+    }
+    
+    private func loadData() {
+        categories = dataManager.fetchCategories()
+        completedTrackers = Set(dataManager.fetchRecords())
+        trackersCollectionView.reloadData()
+        checkPlaceholderVisibility()
     }
     
     private func setupNavigationBar() {
@@ -154,11 +165,11 @@ class TrackerViewController: UIViewController {
     }
     
     private func isTrackerCompletedToday(_ tracker: Tracker, date: Date) -> Bool {
-        completedTrackers.contains { $0.id == tracker.id && Calendar.current.isDate($0.date, inSameDayAs: date) }
+        return dataManager.isTrackerCompleted(tracker, on: date)
     }
     
     private func completedDaysCount(for tracker: Tracker) -> Int {
-        completedTrackers.filter { $0.id == tracker.id }.count
+        return dataManager.completedDaysCount(for: tracker)
     }
     
     private func isFutureDate(_ date: Date) -> Bool {
@@ -175,16 +186,15 @@ class TrackerViewController: UIViewController {
     }
     
     @objc private func handleNewTrackerNotification(_ notification: Notification) {
-        if let userInfo = notification.userInfo,
-           let tracker = userInfo["tracker"] as? Tracker {
-            let newCategory = TrackerCategory(
-                titleCategory: "Новая категория",
-                trackersArray: [tracker]
-            )
-            categories.append(newCategory)
-            trackersCollectionView.reloadData()
-            checkPlaceholderVisibility()
-        }
+        loadData()
+    }
+    
+    @objc private func handleDataChangeNotification(_ notification: Notification) {
+        loadData()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -192,15 +202,8 @@ extension TrackerViewController: TrackerCellDelegate {
     func didTapPlusButton(cell: TrackerCollectionViewCell, tracker: Tracker, date: Date, isCompleted: Bool) {
         guard !isFutureDate(date) else { return }
         
-        let record = TrackerRecord(id: tracker.id, date: date)
-        
-        if isCompleted {
-            completedTrackers.remove(record)
-        } else {
-            completedTrackers.insert(record)
-        }
-        
-        trackersCollectionView.reloadData()
+        dataManager.toggleTrackerCompletion(tracker, on: date)
+        loadData()
     }
 }
 
@@ -267,5 +270,19 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 46)
+    }
+}
+
+extension TrackerViewController: DataManagerDelegate {
+    func didUpdateTrackers(_ changes: [DataManagerChange]) {
+        loadData()
+    }
+    
+    func didUpdateCategories(_ changes: [DataManagerChange]) {
+        loadData()
+    }
+    
+    func didUpdateRecords(_ changes: [DataManagerChange]) {
+        trackersCollectionView.reloadData()
     }
 }
