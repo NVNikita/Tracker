@@ -58,7 +58,7 @@ extension UIColor {
         return UIColor(red: 0.20, green: 0.65, blue: 1.00, alpha: 1.0)
     }
     
-    static var lightGreenYP: UIColor {             // #46E69D
+    static var lightGreenYP: UIColor {
         return UIColor(red: 0.27, green: 0.90, blue: 0.62, alpha: 1.0)
     }
     

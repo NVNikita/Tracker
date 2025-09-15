@@ -371,6 +371,9 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
                 self?.updateCreatingButtonState()
             }
             navigationController?.pushViewController(scheduleVC, animated: true)
+        } else {
+            let categoryVC = CategoryViewController()
+            navigationController?.pushViewController(categoryVC, animated: true)
         }
     }
 }
