@@ -38,6 +38,8 @@ final class CategoryViewController: UIViewController {
         return tableView
     }()
     
+    private let countCells = [Int]() 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -45,6 +47,7 @@ final class CategoryViewController: UIViewController {
         setupUI()
         activateConstraints()
         setupTable()
+        checkPlaceholderVisibility()
     }
     
     private func setupNavBar() {
@@ -71,7 +74,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func setupTable() {
-        categoriesTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        categoriesTableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "cell")
         
         categoriesTableView.dataSource = self
         categoriesTableView.delegate = self
@@ -92,9 +95,17 @@ final class CategoryViewController: UIViewController {
             
             categoriesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             categoriesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            categoriesTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24)
+            categoriesTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            categoriesTableView.heightAnchor.constraint(equalToConstant: CGFloat(countCells.count * 75))
             
         ])
+    }
+    
+    private func checkPlaceholderVisibility() {
+        if countCells.count != 0 {
+            placeholderTitle.isHidden = true
+            placeholderImageView.isHidden = true
+        }
     }
     
     @objc private func newCategoryButtonTapped() {
@@ -104,11 +115,23 @@ final class CategoryViewController: UIViewController {
 
 extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return countCells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = categoriesTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        return cell 
+        let cell = categoriesTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryTableViewCell
+        
+        if indexPath.row < countCells.count - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        } else {
+            
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        }
+        
+        cell.titleLabel.text = "Важное"
+        cell.backgroundColor = .backgroundTables
+        cell.layer.masksToBounds = true
+        cell.layer.cornerRadius = 16
+        return cell
     }
 }
