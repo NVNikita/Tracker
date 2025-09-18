@@ -18,15 +18,15 @@ final class CategoryViewController: UIViewController {
         return title
     }()
     
-    private let newCategoryButton: UIButton = {
+    private lazy var newCategoryButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Добавить категорию", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.addTarget(CategoryViewController.self, action: #selector(newCategoryButtonTapped), for: .touchUpInside)
         button.backgroundColor = .black
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(newCategoryButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -38,7 +38,15 @@ final class CategoryViewController: UIViewController {
         return tableView
     }()
     
-    private let countCells = [Int]() 
+    private var tableViewHeightConstraint: NSLayoutConstraint!
+    
+    private var categoriesList: [String] = [] {
+        didSet {
+            checkPlaceholderVisibility()
+            updateTableViewHeight()
+            categoriesTableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +89,8 @@ final class CategoryViewController: UIViewController {
     }
     
     private func activateConstraints() {
+        tableViewHeightConstraint = categoriesTableView.heightAnchor.constraint(equalToConstant: 0)
+        
         NSLayoutConstraint.activate([
             placeholderImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             placeholderImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -96,42 +106,69 @@ final class CategoryViewController: UIViewController {
             categoriesTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             categoriesTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             categoriesTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            categoriesTableView.heightAnchor.constraint(equalToConstant: CGFloat(countCells.count * 75))
-            
+            tableViewHeightConstraint // Используем переменную констрейнта
         ])
     }
     
+    private func updateTableViewHeight() {
+        let height = CGFloat(categoriesList.count * 75)
+        tableViewHeightConstraint.constant = height
+    }
+    
     private func checkPlaceholderVisibility() {
-        if countCells.count != 0 {
-            placeholderTitle.isHidden = true
-            placeholderImageView.isHidden = true
-        }
+        let shouldHidePlaceholder = categoriesList.count > 0
+        placeholderTitle.isHidden = shouldHidePlaceholder
+        placeholderImageView.isHidden = shouldHidePlaceholder
+        categoriesTableView.isHidden = !shouldHidePlaceholder
+    }
+    
+    private func addNewCategory(_ categoryName: String) {
+        categoriesList.append(categoryName)
     }
     
     @objc private func newCategoryButtonTapped() {
+        let creatingVC = CreatingNewCategoryViewController()
         
+        creatingVC.onCategoryCreated = { [weak self] categoryName in
+            self?.addNewCategory(categoryName)
+        }
+        
+        let navController = UINavigationController(rootViewController: creatingVC)
+        present(navController, animated: true)
     }
 }
 
 extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return countCells.count
+        return categoriesList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = categoriesTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryTableViewCell
         
-        if indexPath.row < countCells.count - 1 {
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        cell.titleLabel.text = categoriesList[indexPath.row]
+        
+        if indexPath.row == categoriesList.count - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
         } else {
-            
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         }
         
-        cell.titleLabel.text = "Важное"
         cell.backgroundColor = .backgroundTables
         cell.layer.masksToBounds = true
-        cell.layer.cornerRadius = 16
+        cell.layer.cornerRadius = 0
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) {
+            cell.accessoryType = .checkmark
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
     }
 }

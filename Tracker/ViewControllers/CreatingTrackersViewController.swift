@@ -86,7 +86,7 @@ final class CreatingTrackersViewController: UIViewController {
         creatingButton.setTitle("Создать", for: .normal)
         creatingButton.setTitleColor(.white, for: .normal)
         creatingButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        creatingButton.backgroundColor = .grayCreatingButton
+        creatingButton.backgroundColor = .grayButton
         creatingButton.layer.cornerRadius = 16
         creatingButton.addTarget(self, action: #selector(creatingButtonTapped), for: .touchUpInside)
         creatingButton.isEnabled = false
@@ -254,7 +254,7 @@ final class CreatingTrackersViewController: UIViewController {
     private func updateCreatingButtonState() {
         let isFormValid = isFormComplete()
         creatingButton.isEnabled = isFormValid
-        creatingButton.backgroundColor = isFormValid ? .black : .grayCreatingButton
+        creatingButton.backgroundColor = isFormValid ? .black : .grayButton
     }
     
     private func isFormComplete() -> Bool {
