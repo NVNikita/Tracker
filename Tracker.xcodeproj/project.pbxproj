@@ -23,6 +23,7 @@
 		EB6F5A9F2E79E298000FEDC6 /* CreatingNewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB6F5A9E2E79E27C000FEDC6 /* CreatingNewCategoryViewController.swift */; };
 		EB70A40C2DEA5E5C00E5F441 /* CreatingTrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB70A40B2DEA5E5C00E5F441 /* CreatingTrackersViewController.swift */; };
 		EB7E8A812E13F63600FD822A /* TrackerSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7E8A802E13F63400FD822A /* TrackerSectionHeaderView.swift */; };
+		EB7F704D2E815ECB0088627F /* CategoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7F704C2E815E9D0088627F /* CategoryManager.swift */; };
 		EB80F51C2DF192BC00F33B7E /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB80F51B2DF192BC00F33B7E /* ScheduleTableViewCell.swift */; };
 		EB95C0972E75AE440089297F /* UIColor + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB95C0962E75AE3C0089297F /* UIColor + ext.swift */; };
 		EB9DD2D02D9464B400B4AD5F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9DD2CF2D9464B400B4AD5F /* TabBarController.swift */; };
@@ -56,6 +57,7 @@
 		EB6F5A9E2E79E27C000FEDC6 /* CreatingNewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingNewCategoryViewController.swift; sourceTree = "<group>"; };
 		EB70A40B2DEA5E5C00E5F441 /* CreatingTrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingTrackersViewController.swift; sourceTree = "<group>"; };
 		EB7E8A802E13F63400FD822A /* TrackerSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerSectionHeaderView.swift; sourceTree = "<group>"; };
+		EB7F704C2E815E9D0088627F /* CategoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryManager.swift; sourceTree = "<group>"; };
 		EB80F51B2DF192BC00F33B7E /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		EB95C0962E75AE3C0089297F /* UIColor + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + ext.swift"; sourceTree = "<group>"; };
 		EB9DD2CF2D9464B400B4AD5F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 		EBDA92052E783E49002A38A1 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				EB7F704C2E815E9D0088627F /* CategoryManager.swift */,
 				EB95C0962E75AE3C0089297F /* UIColor + ext.swift */,
 			);
 			path = Helpers;
@@ -280,6 +283,7 @@
 				EB528B352DAAE2E20036FA05 /* Tracker.swift in Sources */,
 				EB80F51C2DF192BC00F33B7E /* ScheduleTableViewCell.swift in Sources */,
 				EB4B67F42E1ADEC60030F796 /* EmojiCollectionViewCell.swift in Sources */,
+				EB7F704D2E815ECB0088627F /* CategoryManager.swift in Sources */,
 				EB528B392DAAE2FD0036FA05 /* TrackerRecord.swift in Sources */,
 				EB9DD2D02D9464B400B4AD5F /* TabBarController.swift in Sources */,
 				EBA2686F2DF0918E006C3600 /* ScheduleViewController.swift in Sources */,

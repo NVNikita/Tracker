@@ -89,7 +89,7 @@ final class CreatingNewCategoryViewController: UIViewController, UITextFieldDele
         
         onCategoryCreated?(categoryName)
         
-        dismiss(animated: true)
+        navigationController?.dismiss(animated: true)
     }
     
     @objc private func textFieldDidChange(_ textField: UITextField) {
