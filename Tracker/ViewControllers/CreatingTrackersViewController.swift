@@ -373,7 +373,7 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
         if tableView == bottomTableView && indexPath.row == 1 {
             let scheduleVC = ScheduleViewController()
             scheduleVC.selectedDays = selectedDays
@@ -384,16 +384,18 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
             }
             navigationController?.pushViewController(scheduleVC, animated: true)
         } else if tableView == bottomTableView && indexPath.row == 0 {
-            let categoryVC = CategoryViewController()
-            
+            let categoryStore = TrackerCategoryStore(context: DataManager.shared.persistentContainer.viewContext)
+            let categoryViewModel = CategoryViewModel(categoryStore: categoryStore)
+            let categoryVC = CategoryViewController(viewModel: categoryViewModel)
+
             categoryVC.selectedCategory = selectedCategory
-            
-            categoryVC.onCategorySelected = { [weak self] category in
+
+            categoryVC.onCategorySelected = { [weak self] (category: String) in
                 self?.selectedCategory = category
                 self?.bottomTableView.reloadRows(at: [indexPath], with: .none)
                 self?.updateCreatingButtonState()
             }
-            
+
             let navController = UINavigationController(rootViewController: categoryVC)
             present(navController, animated: true)
         }

@@ -13,7 +13,7 @@ final class DataManager: NSObject {
     
     weak var delegate: DataManagerDelegate?
     
-    private lazy var persistentContainer: NSPersistentContainer = {
+    lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "TrackerCoreData")
         container.loadPersistentStores { description, error in
             if let error = error {

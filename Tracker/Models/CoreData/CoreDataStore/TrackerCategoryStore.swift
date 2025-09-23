@@ -53,6 +53,29 @@ final class TrackerCategoryStore: NSObject {
         return objects.compactMap { $0.toTrackerCategory() }
     }
     
+    func fetchCategoryTitles() -> [String] {
+        guard let objects = fetchedResultsController.fetchedObjects else {
+            return []
+        }
+        return objects.compactMap { $0.titleCategory }
+    }
+    
+    func saveCategory(title: String) throws {
+        let category = TrackerCategory(titleCategory: title, trackersArray: [])
+        _ = TrackerCategoryCoreData.create(from: category, context: context)
+        try context.save()
+    }
+    
+    func deleteCategory(title: String) throws {
+        let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "titleCategory == %@", title)
+        
+        if let categoryCoreData = try context.fetch(fetchRequest).first {
+            context.delete(categoryCoreData)
+            try context.save()
+        }
+    }
+    
     func addCategory(_ category: TrackerCategory) throws {
         _ = TrackerCategoryCoreData.create(from: category, context: context)
         try context.save()
