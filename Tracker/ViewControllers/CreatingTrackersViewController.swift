@@ -16,7 +16,7 @@ final class CreatingTrackersViewController: UIViewController {
     private let topTableView = UITableView()
     private let bottomTableView = UITableView()
     private var selectedDays: Set<String> = []
-    private var selectedCategory: String = "Новая категория"
+    private var selectedCategory: String? = nil
     private let categories = ["Категория", "Расписание"]
     private let emojiArray = ["🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶",
                               "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝", "😪"]
@@ -86,7 +86,7 @@ final class CreatingTrackersViewController: UIViewController {
         creatingButton.setTitle("Создать", for: .normal)
         creatingButton.setTitleColor(.white, for: .normal)
         creatingButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        creatingButton.backgroundColor = .grayCreatingButton
+        creatingButton.backgroundColor = .grayButton
         creatingButton.layer.cornerRadius = 16
         creatingButton.addTarget(self, action: #selector(creatingButtonTapped), for: .touchUpInside)
         creatingButton.isEnabled = false
@@ -254,7 +254,7 @@ final class CreatingTrackersViewController: UIViewController {
     private func updateCreatingButtonState() {
         let isFormValid = isFormComplete()
         creatingButton.isEnabled = isFormValid
-        creatingButton.backgroundColor = isFormValid ? .black : .grayCreatingButton
+        creatingButton.backgroundColor = isFormValid ? .black : .grayButton
     }
     
     private func isFormComplete() -> Bool {
@@ -265,6 +265,10 @@ final class CreatingTrackersViewController: UIViewController {
         }
         
         guard !selectedDays.isEmpty else {
+            return false
+        }
+        
+        guard selectedCategory != nil else {
             return false
         }
         
@@ -293,6 +297,8 @@ final class CreatingTrackersViewController: UIViewController {
         guard let selectedColor else { return }
         
         guard let selectedEmoji else { return }
+        
+        guard let selectedCategory else { return }
         
         let newTracker = Tracker(
             id: UUID(),
@@ -338,7 +344,13 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
             cell.accessoryType = .disclosureIndicator
             cell.backgroundColor = .clear
             
-            if indexPath.row == 1 {
+            if indexPath.row == 0 {
+                if let selectedCategory = selectedCategory {
+                    cell.detailTextLabel?.text = selectedCategory
+                }
+                cell.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+                cell.detailTextLabel?.textColor = .gray
+            } else if indexPath.row == 1 {
                 let daysString = getShortDaysString()
                 if !daysString.isEmpty {
                     cell.detailTextLabel?.text = daysString
@@ -361,7 +373,7 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
         if tableView == bottomTableView && indexPath.row == 1 {
             let scheduleVC = ScheduleViewController()
             scheduleVC.selectedDays = selectedDays
@@ -371,6 +383,21 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
                 self?.updateCreatingButtonState()
             }
             navigationController?.pushViewController(scheduleVC, animated: true)
+        } else if tableView == bottomTableView && indexPath.row == 0 {
+            let categoryStore = TrackerCategoryStore(context: DataManager.shared.persistentContainer.viewContext)
+            let categoryViewModel = CategoryViewModel(categoryStore: categoryStore)
+            let categoryVC = CategoryViewController(viewModel: categoryViewModel)
+
+            categoryVC.selectedCategory = selectedCategory
+
+            categoryVC.onCategorySelected = { [weak self] (category: String) in
+                self?.selectedCategory = category
+                self?.bottomTableView.reloadRows(at: [indexPath], with: .none)
+                self?.updateCreatingButtonState()
+            }
+
+            let navController = UINavigationController(rootViewController: categoryVC)
+            present(navController, animated: true)
         }
     }
 }

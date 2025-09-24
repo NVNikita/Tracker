@@ -144,7 +144,7 @@ class TrackerViewController: UIViewController {
             trackersCollectionView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 16),
             trackersCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             trackersCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            trackersCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            trackersCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             placeholderImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             placeholderImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
