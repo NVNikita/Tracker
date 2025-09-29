@@ -15,7 +15,8 @@ final class CategoryViewController: UIViewController {
     private let placeholderImageView = UIImageView(image: UIImage(named: "trackerLogo"))
     private let placeholderTitle: UILabel = {
         let title = UILabel()
-        title.text = "Привычки и события можно\nобъединить по смыслу"
+        title.text = NSLocalizedString("category.empty.title",
+                                       comment: "Title for empty categories view")
         title.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         title.textColor = .black
         title.numberOfLines = 0
@@ -25,7 +26,8 @@ final class CategoryViewController: UIViewController {
     
     private lazy var newCategoryButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(NSLocalizedString("category.button.text",
+                                          comment: "Button new category text"), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.backgroundColor = .black
@@ -97,7 +99,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func setupNavBar() {
-        title = "Категория"
+        title = NSLocalizedString("category.nav.title", comment: "Title for CategoryVC")
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
             .foregroundColor: UIColor.black

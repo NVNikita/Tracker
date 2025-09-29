@@ -63,7 +63,7 @@ class TrackerViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        title = "Трекеры"
+        title = NSLocalizedString("trackers.nav.title", comment: "Title trackerVC")
         navigationController?.navigationBar.prefersLargeTitles = true
         
         let addButton = UIBarButtonItem(
@@ -127,10 +127,10 @@ class TrackerViewController: UIViewController {
         }
         
         placeholderImageView.contentMode = .scaleAspectFit
-        placeholderLabel.text = "Что будем отслеживать?"
+        placeholderLabel.text = NSLocalizedString("trackers.empty.title", comment: "Placeholder title trackerVC")
         placeholderLabel.font = .systemFont(ofSize: 12, weight: .medium)
         placeholderLabel.textColor = .black
-        searchField.placeholder = "Поиск"
+        searchField.placeholder = NSLocalizedString("trackers.search.placeholder", comment: "Placeholder search trackerVC")
         searchField.borderStyle = .roundedRect
     }
     

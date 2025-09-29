@@ -17,7 +17,8 @@ final class CreatingTrackersViewController: UIViewController {
     private let bottomTableView = UITableView()
     private var selectedDays: Set<String> = []
     private var selectedCategory: String? = nil
-    private let categories = ["Категория", "Расписание"]
+    private let categories = [NSLocalizedString("creatingtrackers.cell.category", comment: "Text for category cell"),
+                              NSLocalizedString("creatingtrackers.cell.schedule", comment: "Text for schedule cell")]
     private let emojiArray = ["🙂", "😻", "🌺", "🐶", "❤️", "😱", "😇", "😡", "🥶",
                               "🤔", "🙌", "🍔", "🥦", "🏓", "🥇", "🎸", "🏝", "😪"]
     private let colorsCells: [UIColor] = [.redYP, .lightOrangeYP, .blueYP, .purpleYP, .greenYP, .darkPinkYP,
@@ -55,7 +56,7 @@ final class CreatingTrackersViewController: UIViewController {
     }
     
     private func setupNavBar() {
-        title = "Новая привычка"
+        title = NSLocalizedString("creatingtrackers.nav.title", comment: "Title CreatngVC")
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
             .foregroundColor: UIColor.black
@@ -83,7 +84,8 @@ final class CreatingTrackersViewController: UIViewController {
         emojiCollectionView.translatesAutoresizingMaskIntoConstraints = false
         colorsCollectionsView.translatesAutoresizingMaskIntoConstraints = false
         
-        creatingButton.setTitle("Создать", for: .normal)
+        creatingButton.setTitle(NSLocalizedString("creatingtrackers.button.create",
+                                                  comment: "Text creating button"), for: .normal)
         creatingButton.setTitleColor(.white, for: .normal)
         creatingButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         creatingButton.backgroundColor = .grayButton
@@ -91,7 +93,8 @@ final class CreatingTrackersViewController: UIViewController {
         creatingButton.addTarget(self, action: #selector(creatingButtonTapped), for: .touchUpInside)
         creatingButton.isEnabled = false
         
-        cancelButton.setTitle("Отменить", for: .normal)
+        cancelButton.setTitle(NSLocalizedString("creatingtrackers.button.cancel",
+                                                comment: "Text cancel button"), for: .normal)
         cancelButton.setTitleColor(.red, for: .normal)
         cancelButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         cancelButton.backgroundColor = .white
@@ -208,23 +211,38 @@ final class CreatingTrackersViewController: UIViewController {
     
     private func getShortDaysString() -> String {
         if selectedDays.count == 7 {
-            return "Каждый день"
+            return NSLocalizedString("creating.tracker.daily", comment: "Text for every day")
         } else if selectedDays.isEmpty {
             return ""
         } else {
             let shortDays = selectedDays.map { day in
                 switch day {
-                case "Понедельник": return "Пн"
-                case "Вторник": return "Вт"
-                case "Среда": return "Ср"
-                case "Четверг": return "Чт"
-                case "Пятница": return "Пт"
-                case "Суббота": return "Сб"
-                case "Воскресенье": return "Вс"
+                case NSLocalizedString("schedule.day.monday", comment: ""):
+                    return NSLocalizedString("creating.tracker.day.mon", comment: "")
+                case NSLocalizedString("schedule.day.tuesday", comment: ""):
+                    return NSLocalizedString("creating.tracker.day.tue", comment: "")
+                case NSLocalizedString("schedule.day.wednesday", comment: ""):
+                    return NSLocalizedString("creating.tracker.day.wed", comment: "")
+                case NSLocalizedString("schedule.day.thursday", comment: ""):
+                    return NSLocalizedString("creating.tracker.day.thu", comment: "")
+                case NSLocalizedString("schedule.day.friday", comment: ""):
+                    return NSLocalizedString("creating.tracker.day.fri", comment: "")
+                case NSLocalizedString("schedule.day.saturday", comment: ""):
+                    return NSLocalizedString("creating.tracker.day.sat", comment: "")
+                case NSLocalizedString("schedule.day.sunday", comment: ""):
+                    return NSLocalizedString("creating.tracker.day.sun", comment: "")
                 default: return ""
                 }
             }.sorted { first, second in
-                let order = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
+                let order = [
+                    NSLocalizedString("creating.tracker.day.mon", comment: ""),
+                    NSLocalizedString("creating.tracker.day.tue", comment: ""),
+                    NSLocalizedString("creating.tracker.day.wed", comment: ""),
+                    NSLocalizedString("creating.tracker.day.thu", comment: ""),
+                    NSLocalizedString("creating.tracker.day.fri", comment: ""),
+                    NSLocalizedString("creating.tracker.day.sat", comment: ""),
+                    NSLocalizedString("creating.tracker.day.sun", comment: "")
+                ]
                 return order.firstIndex(of: first) ?? 0 < order.firstIndex(of: second) ?? 0
             }
             
@@ -237,13 +255,20 @@ final class CreatingTrackersViewController: UIViewController {
         
         for day in selectedDays {
             switch day {
-            case "Понедельник": weekdays.append(.monday)
-            case "Вторник": weekdays.append(.tuesday)
-            case "Среда": weekdays.append(.wednesday)
-            case "Четверг": weekdays.append(.thursday)
-            case "Пятница": weekdays.append(.friday)
-            case "Суббота": weekdays.append(.saturday)
-            case "Воскресенье": weekdays.append(.sunday)
+            case NSLocalizedString("schedule.day.monday", comment: ""):
+                weekdays.append(.monday)
+            case NSLocalizedString("schedule.day.tuesday", comment: ""):
+                weekdays.append(.tuesday)
+            case NSLocalizedString("schedule.day.wednesday", comment: ""):
+                weekdays.append(.wednesday)
+            case NSLocalizedString("schedule.day.thursday", comment: ""):
+                weekdays.append(.thursday)
+            case NSLocalizedString("schedule.day.friday", comment: ""):
+                weekdays.append(.friday)
+            case NSLocalizedString("schedule.day.saturday", comment: ""):
+                weekdays.append(.saturday)
+            case NSLocalizedString("schedule.day.sunday", comment: ""):
+                weekdays.append(.sunday)
             default: break
             }
         }
@@ -331,7 +356,8 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == topTableView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TextFieldCell", for: indexPath) as! TextFieldTableViewCell
-            cell.textField.placeholder = "Введите название трекера"
+            cell.textField.placeholder = NSLocalizedString("creatingtrackers.search.placeholder",
+                                                           comment: "Textp search placeholder")
             cell.textField.font = .systemFont(ofSize: 17)
             cell.textField.textColor = .black
             cell.textField.delegate = self
@@ -451,9 +477,9 @@ extension CreatingTrackersViewController: UICollectionViewDataSource {
         ) as! CreatingCollectionHeaderView
         
         if collectionView == emojiCollectionView {
-            header.titleLabel.text = "Emoji"
+            header.titleLabel.text = NSLocalizedString("creatingtracker.title.emoji", comment: "Emoji header title")
         } else {
-            header.titleLabel.text = "Цвет"
+            header.titleLabel.text = NSLocalizedString("creatingtrackers.title.color", comment: "Colors header title")
         }
         
         return header

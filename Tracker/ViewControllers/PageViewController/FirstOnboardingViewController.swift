@@ -11,7 +11,7 @@ final class FirstOnboardingViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let title = UILabel()
-        title.text = "Отслеживайте только то, что хотите"
+        title.text = NSLocalizedString("onboarding.first.title", comment: "Text on first onboarding view")
         title.font = .systemFont(ofSize: 32, weight: .bold)
         title.textColor = .black
         title.numberOfLines = 0
@@ -27,7 +27,8 @@ final class FirstOnboardingViewController: UIViewController {
     
     private lazy var exitButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Вот это технологии!", for: .normal)
+        let buttonText = NSLocalizedString("onboarding.button.tech", comment: "Text button on first onboarding view")
+        button.setTitle(buttonText, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .black

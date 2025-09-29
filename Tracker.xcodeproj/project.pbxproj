@@ -33,6 +33,7 @@
 		EB9DD2D22D9469A400B4AD5F /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9DD2D12D9469A400B4AD5F /* TrackerViewController.swift */; };
 		EB9DD2D42D9469C400B4AD5F /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9DD2D32D9469C400B4AD5F /* StatisticViewController.swift */; };
 		EBA2686F2DF0918E006C3600 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA2686E2DF0918E006C3600 /* ScheduleViewController.swift */; };
+		EBBC380F2E8ADD0E00D160A7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = EBBC380D2E8ADD0E00D160A7 /* Localizable.strings */; };
 		EBDA92042E783B90002A38A1 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDA92032E783B5E002A38A1 /* CategoryViewController.swift */; };
 		EBDA92072E784698002A38A1 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBDA92062E784688002A38A1 /* CategoryTableViewCell.swift */; };
 		EBDB5EE52E6E35B700ABEC1A /* TrackerCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EBDB5EE32E6E35B700ABEC1A /* TrackerCoreData.xcdatamodeld */; };
@@ -70,6 +71,9 @@
 		EB9DD2D12D9469A400B4AD5F /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
 		EB9DD2D32D9469C400B4AD5F /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 		EBA2686E2DF0918E006C3600 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
+		EBBC380E2E8ADD0E00D160A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		EBBC38102E8AE52100D160A7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		EBBC38112E8AE52100D160A7 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EBDA92032E783B5E002A38A1 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		EBDA92062E784688002A38A1 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		EBDB5EE42E6E35B700ABEC1A /* TrackerCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerCoreData.xcdatamodel; sourceTree = "<group>"; };
@@ -182,6 +186,14 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
+		EBBC380C2E8ADCEC00D160A7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EBBC380D2E8ADD0E00D160A7 /* Localizable.strings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		EBDA92052E783E49002A38A1 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +222,7 @@
 		EBE7BBFD2D920B7F00006499 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				EBBC380C2E8ADCEC00D160A7 /* Resources */,
 				EBDA92052E783E49002A38A1 /* Helpers */,
 				EB80F51E2DF1A15F00F33B7E /* ViewControllers */,
 				EB80F51D2DF1A12400F33B7E /* CastomCells */,
@@ -265,6 +278,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = EBE7BBF22D920B7F00006499;
 			productRefGroup = EBE7BBFC2D920B7F00006499 /* Products */;
@@ -282,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBE7BC082D920B8100006499 /* Assets.xcassets in Resources */,
+				EBBC380F2E8ADD0E00D160A7 /* Localizable.strings in Resources */,
 				EBE7BC0B2D920B8100006499 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,10 +346,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		EBBC380D2E8ADD0E00D160A7 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EBBC380E2E8ADD0E00D160A7 /* en */,
+				EBBC38112E8AE52100D160A7 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		EBE7BC092D920B8100006499 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				EBE7BC0A2D920B8100006499 /* Base */,
+				EBBC38102E8AE52100D160A7 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -347,6 +372,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -411,6 +437,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";

@@ -14,7 +14,7 @@ final class CreatingNewCategoryViewController: UIViewController, UITextFieldDele
     
     private lazy var readyButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(NSLocalizedString("new.button.text", comment: "Text button ready"), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .grayButton
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
@@ -44,7 +44,7 @@ final class CreatingNewCategoryViewController: UIViewController, UITextFieldDele
     }
     
     private func setupNavBar() {
-        title = "Новая категория"
+        title = NSLocalizedString("new.category.title", comment: "Title categoryVC")
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
             .foregroundColor: UIColor.black
@@ -106,7 +106,8 @@ extension CreatingNewCategoryViewController: UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TextFieldTableViewCell
-        cell.textField.placeholder = "Введите название категории"
+        cell.textField.placeholder = NSLocalizedString("new.category.search.placeholder",
+                                                       comment: "Text search placeholder")
         cell.textField.delegate = self
         cell.textField.clearButtonMode = .never
         cell.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)

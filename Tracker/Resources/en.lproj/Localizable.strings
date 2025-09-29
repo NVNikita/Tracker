@@ -1,0 +1,63 @@
+// MARK: - Onboarding
+"onboarding.first.title" = "Track only what you want";
+"onboarding.second.title" = "Even if it's not \nliters of water and yoga";
+"onboarding.button.tech" = "That's some tech!";
+
+// MARK: - Tab Bar
+"tab.trackers" = "Trackers";
+"tab.statistics" = "Statistics";
+
+// MARK: - TrackerViewController
+"trackers.nav.title" = "Trackers";
+"trackers.search.placeholder" = "Search";
+"trackers.empty.title" = "What are we going to track?";
+
+// MARK: - TrackerTypeViewController
+"trackertype.nav.title" = "Creating a tracker";
+"trackertype.button.habbit.title" = "Habbit";
+"trackertype.button.event.title" = "An irregular event";
+
+// MARK: - CreatingTrackersViewController
+"creatingtrackers.nav.title" = "New habbit";
+"creatingtrackers.search.placeholder" = "Enter tracker name";
+"creatingtracker.title.emoji" = "Emoji";
+"creatingtrackers.title.color" = "Color";
+"creatingtrackers.button.cancel" = "Cancel";
+"creatingtrackers.button.create" = "Create";
+"creatingtrackers.cell.category" = "Category";
+"creatingtrackers.cell.schedule" = "Schedule";
+
+// Days of week
+"creating.tracker.daily" = "Every day";
+"creating.tracker.day.mon" = "Mon";
+"creating.tracker.day.tue" = "Tue";
+"creating.tracker.day.wed" = "Wed";
+"creating.tracker.day.thu" = "Thu";
+"creating.tracker.day.fri" = "Fri";
+"creating.tracker.day.sat" = "Sat";
+"creating.tracker.day.sun" = "Sun";
+
+// MARK: - CategoryViewController
+"category.nav.title" = "Category";
+"category.button.text" = "Add category";
+"category.empty.title" = "Habits and events can be\ncombined by meaning";
+
+// MARK: - CreatingNewCategoryViewController
+"new.category.title" = "New category";
+"new.category.search.placeholder" = "Enter category name";
+"new.button.text" = "Ready";
+
+// MARK: - ScheduleViewController
+"schedule.nav.title" = "Schedule";
+"schedule.button.ready" = "Done";
+
+// Days of week
+"schedule.day.monday" = "Monday";
+"schedule.day.tuesday" = "Tuesday";
+"schedule.day.wednesday" = "Wednesday";
+"schedule.day.thursday" = "Thursday";
+"schedule.day.friday" = "Friday";
+"schedule.day.saturday" = "Saturday";
+"schedule.day.sunday" = "Sunday";
+
+// MARK: - StatisticViewController
