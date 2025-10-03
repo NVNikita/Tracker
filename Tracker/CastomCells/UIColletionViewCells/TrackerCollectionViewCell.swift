@@ -54,7 +54,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         titleLabel.text = tracker.name
         emojiLabel.text = tracker.emoji
         containerView.backgroundColor = tracker.color
-        daysCountLabel.text = "\(countDays) день"
+        daysCountLabel.text = String(format: NSLocalizedString("days_count", comment: ""), countDays)
         
         let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
         let plusImage = UIImage(systemName: "plus", withConfiguration: config)
