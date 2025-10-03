@@ -39,6 +39,17 @@ class TrackerViewController: UIViewController {
         frame: .zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     )
+    private lazy var filterButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Фильтры", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 16
+        button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,7 +132,7 @@ class TrackerViewController: UIViewController {
     }
     
     private func setupUI() {
-        [placeholderImageView, placeholderLabel, searchField, trackersCollectionView].forEach {
+        [placeholderImageView, placeholderLabel, searchField, trackersCollectionView, filterButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -152,7 +163,12 @@ class TrackerViewController: UIViewController {
             placeholderImageView.heightAnchor.constraint(equalToConstant: 80),
             
             placeholderLabel.topAnchor.constraint(equalTo: placeholderImageView.bottomAnchor, constant: 8),
-            placeholderLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            placeholderLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            filterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 131),
+            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -130),
+            filterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+            filterButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     
@@ -162,6 +178,7 @@ class TrackerViewController: UIViewController {
         placeholderImageView.isHidden = !isEmpty
         placeholderLabel.isHidden = !isEmpty
         trackersCollectionView.isHidden = isEmpty
+        filterButton.isHidden = isEmpty
     }
     
     private func isTrackerCompletedToday(_ tracker: Tracker, date: Date) -> Bool {
@@ -179,6 +196,10 @@ class TrackerViewController: UIViewController {
     @objc private func addButtonTapped() {
         let navVC = UINavigationController(rootViewController: TrackerTypeViewController())
         present(navVC, animated: true)
+    }
+    
+    @objc private func filterButtonTapped() {
+        
     }
     
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
