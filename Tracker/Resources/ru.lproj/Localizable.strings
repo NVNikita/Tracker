@@ -61,3 +61,5 @@
 "schedule.day.sunday" = "Воскресенье";
 
 // MARK: - StatisticViewController
+"statistic.nav.title" = "Статистика";
+"statictic.placeholder.title" = "Анализировать пока нечего";

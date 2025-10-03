@@ -10,6 +10,7 @@
 		EB02EAA12E72E23700F07AD7 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB02EAA02E72E22A00F07AD7 /* DataManager.swift */; };
 		EB02EAA52E73412800F07AD7 /* DataManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB02EAA42E73411F00F07AD7 /* DataManagerDelegate.swift */; };
 		EB0546A72E821C3C0099F876 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0546A62E821C380099F876 /* CategoryViewModel.swift */; };
+		EB0600902E904D630048746C /* StatisticCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB06008F2E904D4B0048746C /* StatisticCollectionViewCell.swift */; };
 		EB18C7372DE90AEC00F2AB56 /* TrackerTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB18C7362DE90AEC00F2AB56 /* TrackerTypeViewController.swift */; };
 		EB20A6102E12EEB300695628 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB20A60F2E12EE9900695628 /* TrackerCollectionViewCell.swift */; };
 		EB2D905A2DEF380000A92017 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2D90592DEF380000A92017 /* TextFieldTableViewCell.swift */; };
@@ -49,6 +50,7 @@
 		EB02EAA02E72E22A00F07AD7 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		EB02EAA42E73411F00F07AD7 /* DataManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManagerDelegate.swift; sourceTree = "<group>"; };
 		EB0546A62E821C380099F876 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
+		EB06008F2E904D4B0048746C /* StatisticCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticCollectionViewCell.swift; sourceTree = "<group>"; };
 		EB18C7362DE90AEC00F2AB56 /* TrackerTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeViewController.swift; sourceTree = "<group>"; };
 		EB20A60F2E12EE9900695628 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		EB2D90592DEF380000A92017 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 		EB6F3E332E14191E0077DEE7 /* UIColletionViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				EB06008F2E904D4B0048746C /* StatisticCollectionViewCell.swift */,
 				EBFF09A02E1D2EFD00803D97 /* CreatingCollectionHeaderView.swift */,
 				EB4B67F52E1ADEC90030F796 /* ColorCollectionViewCell.swift */,
 				EB4B67F32E1ADEA50030F796 /* EmojiCollectionViewCell.swift */,
@@ -319,6 +322,7 @@
 				EB7E8A812E13F63600FD822A /* TrackerSectionHeaderView.swift in Sources */,
 				EB95C0972E75AE440089297F /* UIColor + ext.swift in Sources */,
 				EB528B352DAAE2E20036FA05 /* Tracker.swift in Sources */,
+				EB0600902E904D630048746C /* StatisticCollectionViewCell.swift in Sources */,
 				EB80F51C2DF192BC00F33B7E /* ScheduleTableViewCell.swift in Sources */,
 				EB4B67F42E1ADEC60030F796 /* EmojiCollectionViewCell.swift in Sources */,
 				EB528B392DAAE2FD0036FA05 /* TrackerRecord.swift in Sources */,
