@@ -15,7 +15,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     static let identifier = "TrackerCell"
     
     private var countDays: Int = 0
-    private let containerView = UIView()
+    let containerView = UIView()
     private let emojiLabel = UILabel()
     private let titleLabel = UILabel()
     private let daysCountLabel = UILabel()

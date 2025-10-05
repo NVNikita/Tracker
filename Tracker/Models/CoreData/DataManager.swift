@@ -123,6 +123,10 @@ final class DataManager: NSObject {
             return 0
         }
     }
+    
+    func deleteTracker(_ tracker: Tracker) {
+        
+    }
 }
 
 extension DataManager: TrackerStoreDelegate {

@@ -272,6 +272,68 @@ extension TrackerViewController: UICollectionViewDataSource {
     }
 }
 
+extension TrackerViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let tracker = filterTrackers(for: currentDate)[indexPath.section].trackersArray[indexPath.row]
+        
+        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: {
+            return nil
+        }) { [weak self] _ in
+            return UIMenu(children: [
+                UIAction(title: "Редактировать") { _ in
+                    self?.editTracker(tracker)
+                },
+                UIAction(title: "Удалить", attributes: .destructive) { _ in
+                    self?.deleteTracker(tracker)
+                }
+            ])
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath,
+              let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else {
+            return nil
+        }
+        
+        let parameters = UIPreviewParameters()
+        parameters.backgroundColor = .clear
+        
+        
+        let path = UIBezierPath(roundedRect: cell.containerView.bounds, cornerRadius: 16)
+        parameters.visiblePath = path
+        
+        let preview = UITargetedPreview(view: cell.containerView, parameters: parameters)
+        return preview
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        return self.collectionView(collectionView, previewForHighlightingContextMenuWithConfiguration: configuration)
+    }
+    
+    private func editTracker(_ tracker: Tracker) {
+        print("Редактировать трекер: \(tracker.name)")
+        
+    }
+    
+    private func deleteTracker(_ tracker: Tracker) {
+        let alert = UIAlertController(
+            title: nil,
+            message: "Уверены что хотите удалить трекер?",
+            preferredStyle: .actionSheet
+        )
+        
+        alert.addAction(UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+            self?.dataManager.deleteTracker(tracker)
+            self?.loadData()
+        })
+        
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        
+        present(alert, animated: true)
+    }
+}
+
 extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 167, height: 148)
