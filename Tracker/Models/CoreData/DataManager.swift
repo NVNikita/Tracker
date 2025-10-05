@@ -125,7 +125,17 @@ final class DataManager: NSObject {
     }
     
     func deleteTracker(_ tracker: Tracker) {
-        
+        do {
+            let records = try recordStore.fetchRecords(for: tracker.id)
+            for record in records {
+                try recordStore.deleteRecord(record)
+            }
+            
+            try trackerStore.deleteTracker(tracker)
+            
+        } catch {
+            print("Failed to delete tracker: \(error)")
+        }
     }
 }
 
