@@ -47,13 +47,13 @@ final class CreatingNewCategoryViewController: UIViewController, UITextFieldDele
         title = NSLocalizedString("new.category.title", comment: "Title categoryVC")
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.tintStringColor
         ]
         navigationItem.setHidesBackButton(true, animated: false)
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.backgroundViewColor
         
         view.addSubview(readyButton)
         view.addSubview(tableViewText)
@@ -95,7 +95,8 @@ final class CreatingNewCategoryViewController: UIViewController, UITextFieldDele
     @objc private func textFieldDidChange(_ textField: UITextField) {
         let text = textField.text ?? ""
         readyButton.isEnabled = !text.isEmpty
-        readyButton.backgroundColor = !text.isEmpty ? .black : .grayButton
+        readyButton.backgroundColor = !text.isEmpty ? .backgroundButtonColor : .grayButton
+        readyButton.setTitleColor(UIColor.buttonTextColor, for: .normal)
     }
 }
 

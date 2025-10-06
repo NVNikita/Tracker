@@ -28,14 +28,14 @@ final class TrackerTypeViewController: UIViewController {
         title = NSLocalizedString("trackertype.nav.title", comment: "Title trackerTypeVC")
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.tintStringColor
         ]
         
         navigationItem.setHidesBackButton(true, animated: false)
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.backgroundViewColor
         
         view.addSubview(buttonEvent)
         view.addSubview(buttonHabbit)
@@ -44,16 +44,16 @@ final class TrackerTypeViewController: UIViewController {
         buttonHabbit.translatesAutoresizingMaskIntoConstraints = false
         
         buttonHabbit.setTitle(buttonHabbitText, for: .normal)
-        buttonHabbit.setTitleColor(.white, for: .normal)
+        buttonHabbit.setTitleColor(UIColor.buttonTextColor, for: .normal)
         buttonHabbit.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        buttonHabbit.backgroundColor = .black
+        buttonHabbit.backgroundColor = UIColor.backgroundButtonColor
         buttonHabbit.layer.cornerRadius = 16
         buttonHabbit.addTarget(self, action: #selector(buttonHabbitTapped), for: .touchUpInside)
         
         buttonEvent.setTitle(buttonEventText, for: .normal)
-        buttonEvent.setTitleColor(.white, for: .normal)
+        buttonEvent.setTitleColor(UIColor.buttonTextColor, for: .normal)
         buttonEvent.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        buttonEvent.backgroundColor = .black
+        buttonEvent.backgroundColor = UIColor.backgroundButtonColor
         buttonEvent.layer.cornerRadius = 16
         buttonEvent.addTarget(self, action: #selector(buttonEventTapped), for: .touchUpInside)
     }

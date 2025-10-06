@@ -44,7 +44,7 @@ final class CreatingTrackersViewController: UIViewController {
     private let daysCountLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 32, weight: .bold)
-        label.textColor = .black
+        label.textColor = UIColor.tintStringColor
         label.textAlignment = .center
         label.text = "0 дней"
         label.isHidden = true
@@ -97,13 +97,13 @@ final class CreatingTrackersViewController: UIViewController {
         
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.tintStringColor
         ]
         navigationItem.setHidesBackButton(true, animated: false)
     }
     
     private func activateUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.backgroundViewColor
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -136,7 +136,7 @@ final class CreatingTrackersViewController: UIViewController {
             actionButton.setTitle("Сохранить", for: .normal)
         }
         
-        actionButton.setTitleColor(.white, for: .normal)
+        actionButton.setTitleColor(UIColor.white, for: .normal)
         actionButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         actionButton.backgroundColor = .grayButton
         actionButton.layer.cornerRadius = 16
@@ -147,10 +147,10 @@ final class CreatingTrackersViewController: UIViewController {
                                                 comment: "Text cancel button"), for: .normal)
         cancelButton.setTitleColor(.red, for: .normal)
         cancelButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        cancelButton.backgroundColor = .white
+        cancelButton.backgroundColor = .backgroundViewColor
         cancelButton.layer.cornerRadius = 16
         cancelButton.layer.borderWidth = 1
-        cancelButton.layer.borderColor = UIColor.red.cgColor
+        cancelButton.layer.borderColor = UIColor.redYP.cgColor
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
     }
     
@@ -406,7 +406,8 @@ final class CreatingTrackersViewController: UIViewController {
     private func updateActionButtonState() {
         let isFormValid = isFormComplete()
         actionButton.isEnabled = isFormValid
-        actionButton.backgroundColor = isFormValid ? .black : .grayButton
+        actionButton.backgroundColor = isFormValid ? UIColor.backgroundButtonColor : .grayButton
+        actionButton.setTitleColor(.buttonTextColor, for: .normal)
     }
     
     private func isFormComplete() -> Bool {
@@ -507,7 +508,7 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
             cell.textField.placeholder = NSLocalizedString("creatingtrackers.search.placeholder",
                                                            comment: "Textp search placeholder")
             cell.textField.font = .systemFont(ofSize: 17)
-            cell.textField.textColor = .black
+            cell.textField.textColor = .tintStringColor
             cell.textField.delegate = self
             
             if mode == .edit, let tracker = trackerToEdit {
@@ -519,7 +520,7 @@ extension CreatingTrackersViewController: UITableViewDataSource, UITableViewDele
             let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "CategoryCell")
             cell.textLabel?.text = categories[indexPath.row]
             cell.textLabel?.font = .systemFont(ofSize: 17)
-            cell.textLabel?.textColor = .black
+            cell.textLabel?.textColor = .tintStringColor
             cell.accessoryType = .disclosureIndicator
             cell.backgroundColor = .clear
             
@@ -634,6 +635,8 @@ extension CreatingTrackersViewController: UICollectionViewDataSource {
         } else {
             header.titleLabel.text = NSLocalizedString("creatingtrackers.title.color", comment: "Colors header title")
         }
+        
+        header.titleLabel.textColor = UIColor.tintStringColor
         
         return header
     }

@@ -35,13 +35,13 @@ final class ScheduleViewController: UIViewController {
         title = NSLocalizedString("schedule.nav.title", comment: "Title sheduleVC")
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.tintStringColor
         ]
         navigationItem.setHidesBackButton(true, animated: false)
     }
     
     private func activateUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.backgroundViewColor
         view.addSubview(readyButton)
         view.addSubview(scheduleTable)
         
@@ -50,9 +50,9 @@ final class ScheduleViewController: UIViewController {
         
         readyButton.setTitle(NSLocalizedString("schedule.button.ready",
                                                comment: "Text ready button"), for: .normal)
-        readyButton.setTitleColor(.white, for: .normal)
+        readyButton.setTitleColor(.buttonTextColor, for: .normal)
         readyButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        readyButton.backgroundColor = .black
+        readyButton.backgroundColor = UIColor.backgroundButtonColor
         readyButton.layer.masksToBounds = true
         readyButton.layer.cornerRadius = 16
         readyButton.addTarget(self, action: #selector(readyButtonTapped), for: .touchUpInside)

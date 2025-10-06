@@ -20,7 +20,7 @@ final class StatisticViewController: UIViewController {
         let label = UILabel()
         label.text = NSLocalizedString("statictic.placeholder.title",
                                        comment: "Statistic placeholder statistickVC")
-        label.textColor = .black
+        label.textColor = UIColor.tintStringColor
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -31,6 +31,13 @@ final class StatisticViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         return collectionView
     }()
+    
+    private let titleBestTime = "Лучший период"
+    private let perfectcDays = "Идеальные дни"
+    private let trackersCompleted = "Трекеров завершено"
+    private let averageValue = "Среднее значение"
+    
+    private lazy var titleCells: [String] = [titleBestTime, perfectcDays, trackersCompleted, averageValue]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +60,7 @@ final class StatisticViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.backgroundViewColor
         
         view.addSubview(placeholderImageView)
         view.addSubview(placeholderLabel)
@@ -92,7 +99,7 @@ extension StatisticViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! StatisticCollectionViewCell
-        cell.titleLabel.text = "Test"
+        cell.titleLabel.text = titleCells[indexPath.row]
         cell.countLabel.text = "9"
         return cell
     }

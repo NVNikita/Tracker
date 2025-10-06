@@ -12,7 +12,7 @@ final class StatisticCollectionViewCell: UICollectionViewCell {
     lazy var countLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 34, weight: .bold)
-        label.textColor = .black
+        label.textColor = UIColor.tintStringColor
         label.numberOfLines = 1
         label.textAlignment = .left
         return label
@@ -20,7 +20,7 @@ final class StatisticCollectionViewCell: UICollectionViewCell {
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = UIColor.tintStringColor
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.numberOfLines = 1
         label.textAlignment = .left

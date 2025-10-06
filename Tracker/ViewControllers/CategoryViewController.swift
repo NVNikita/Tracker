@@ -18,7 +18,7 @@ final class CategoryViewController: UIViewController {
         title.text = NSLocalizedString("category.empty.title",
                                        comment: "Title for empty categories view")
         title.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        title.textColor = .black
+        title.textColor = UIColor.tintStringColor
         title.numberOfLines = 0
         title.textAlignment = .center
         return title
@@ -28,9 +28,9 @@ final class CategoryViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle(NSLocalizedString("category.button.text",
                                           comment: "Button new category text"), for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(UIColor.buttonTextColor, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.backgroundColor = .black
+        button.backgroundColor = UIColor.backgroundButtonColor
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(newCategoryButtonTapped), for: .touchUpInside)
@@ -102,12 +102,12 @@ final class CategoryViewController: UIViewController {
         title = NSLocalizedString("category.nav.title", comment: "Title for CategoryVC")
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.tintStringColor
         ]
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.backgroundViewColor
         
         view.addSubview(placeholderTitle)
         view.addSubview(placeholderImageView)
@@ -179,6 +179,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = categoriesTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryTableViewCell
         
         cell.titleLabel.text = viewModel.getCategoryTitle(at: indexPath.row)
+        cell.titleLabel.textColor = UIColor.tintStringColor
         
         if viewModel.getCategoryTitle(at: indexPath.row) == selectedCategory {
             cell.accessoryType = .checkmark

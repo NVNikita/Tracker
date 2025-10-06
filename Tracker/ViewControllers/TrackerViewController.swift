@@ -53,7 +53,7 @@ class TrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.backgroundViewColor
         
         setupNavigationBar()
         setupUI()
@@ -83,7 +83,7 @@ class TrackerViewController: UIViewController {
             target: self,
             action: #selector(addButtonTapped)
         )
-        addButton.tintColor = .black
+        addButton.tintColor = UIColor.tintStringColor
         navigationItem.leftBarButtonItem = addButton
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
     }
@@ -140,7 +140,7 @@ class TrackerViewController: UIViewController {
         placeholderImageView.contentMode = .scaleAspectFit
         placeholderLabel.text = NSLocalizedString("trackers.empty.title", comment: "Placeholder title trackerVC")
         placeholderLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        placeholderLabel.textColor = .black
+        placeholderLabel.textColor = UIColor.tintStringColor
         searchField.placeholder = NSLocalizedString("trackers.search.placeholder", comment: "Placeholder search trackerVC")
         searchField.borderStyle = .roundedRect
     }
