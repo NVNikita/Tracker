@@ -38,9 +38,9 @@ extension UIColor {
     
     static var backgroundTables = UIColor { (traits: UITraitCollection) -> UIColor in
         if traits.userInterfaceStyle == .light {
-            return UIColor.backgroundViewColor
+            return UIColor(red: 0.902, green: 0.910, blue: 0.922, alpha: 0.302)
         } else {
-            return UIColor.white
+            return UIColor(red: 0.255, green: 0.255, blue: 0.255, alpha: 0.85)
         }
     }
     

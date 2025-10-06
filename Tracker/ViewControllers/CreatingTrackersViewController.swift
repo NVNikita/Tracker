@@ -20,7 +20,16 @@ final class CreatingTrackersViewController: UIViewController {
     
     private var selectedEmoji: String?
     private var selectedColor: UIColor?
-    private let actionButton = UIButton(type: .system)
+    private lazy var actionButton: UIButton = {
+        let actionButton = UIButton(type: .system)
+        actionButton.setTitleColor(UIColor.white, for: .disabled)
+        actionButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        actionButton.backgroundColor = .grayButton
+        actionButton.layer.cornerRadius = 16
+        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+        actionButton.isEnabled = false
+        return actionButton
+    }()
     private let cancelButton = UIButton(type: .system)
     private let topTableView = UITableView()
     private let bottomTableView = UITableView()
@@ -135,13 +144,6 @@ final class CreatingTrackersViewController: UIViewController {
         case .edit:
             actionButton.setTitle("Сохранить", for: .normal)
         }
-        
-        actionButton.setTitleColor(UIColor.white, for: .normal)
-        actionButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        actionButton.backgroundColor = .grayButton
-        actionButton.layer.cornerRadius = 16
-        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
-        actionButton.isEnabled = false
         
         cancelButton.setTitle(NSLocalizedString("creatingtrackers.button.cancel",
                                                 comment: "Text cancel button"), for: .normal)
