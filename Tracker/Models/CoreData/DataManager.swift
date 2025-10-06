@@ -137,6 +137,50 @@ final class DataManager: NSObject {
             print("Failed to delete tracker: \(error)")
         }
     }
+    
+    func updateTracker(_ tracker: Tracker, category: String) {
+        do {
+            let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
+            
+            if let trackerCoreData = try context.fetch(fetchRequest).first {
+                trackerCoreData.name = tracker.name
+                trackerCoreData.emoji = tracker.emoji
+                
+                if let colorData = try? NSKeyedArchiver.archivedData(withRootObject: tracker.color, requiringSecureCoding: false) {
+                    trackerCoreData.colorData = colorData
+                }
+                
+                if let schedule = tracker.schedule {
+                    let rawValues = schedule.map { $0.rawValue }
+                    if let scheduleData = try? NSKeyedArchiver.archivedData(withRootObject: rawValues, requiringSecureCoding: false) {
+                        trackerCoreData.schedule = scheduleData
+                    }
+                } else {
+                    trackerCoreData.schedule = nil
+                }
+                
+                let categoryFetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+                categoryFetchRequest.predicate = NSPredicate(format: "titleCategory == %@", category)
+                
+                let categoryCoreData: TrackerCategoryCoreData
+                
+                if let existingCategory = try context.fetch(categoryFetchRequest).first {
+                    categoryCoreData = existingCategory
+                } else {
+                    categoryCoreData = TrackerCategoryCoreData(context: context)
+                    categoryCoreData.titleCategory = category
+                }
+                
+                trackerCoreData.category?.removeFromTrackers(trackerCoreData)
+                categoryCoreData.addToTrackers(trackerCoreData)
+                
+                try context.save()
+            }
+        } catch {
+            print("Failed to update tracker: \(error)")
+        }
+    }
 }
 
 extension DataManager: TrackerStoreDelegate {

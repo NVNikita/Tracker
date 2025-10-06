@@ -312,8 +312,15 @@ extension TrackerViewController: UICollectionViewDelegate {
     }
     
     private func editTracker(_ tracker: Tracker) {
-        print("Редактировать трекер: \(tracker.name)")
+        let category = categories.first { category in
+            category.trackersArray.contains { $0.id == tracker.id }
+        }
         
+        guard let categoryTitle = category?.titleCategory else { return }
+        
+        let editVC = CreatingTrackersViewController(tracker: tracker, category: categoryTitle)
+        let navController = UINavigationController(rootViewController: editVC)
+        present(navController, animated: true)
     }
     
     private func deleteTracker(_ tracker: Tracker) {
