@@ -49,9 +49,15 @@
 "category.nav.title" = "Категория";
 "category.button.text" = "Добавить категорию";
 "category.empty.title" = "Привычки и события можно\nобъединить по смыслу";
+"category.menu.edit" = "Редактировать";
+"category.menu.delete" = "Удалить";
+"category.delete.confirm.title" = "Эта категория точно не нужна?";
+"category.alert.buttonDelete" = "Удалить";
+"category.alert.buttonCancel" = "Отменить";
 
 // MARK: - CreatingNewCategoryViewController
 "new.category.title" = "Новая категория";
+"new.category.title.edit" = "Редактирование категории";
 "new.category.search.placeholder" = "Введите название категории";
 "new.button.text" = "Готово";
 

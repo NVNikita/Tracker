@@ -269,6 +269,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         ) as! TrackerSectionHeaderView
         
         header.titleLabel.text = filterTrackers(for: currentDate)[indexPath.section].titleCategory
+        header.titleLabel.textColor = UIColor.tintStringColor
         return header
     }
 }

@@ -49,9 +49,15 @@
 "category.nav.title" = "Category";
 "category.button.text" = "Add category";
 "category.empty.title" = "Habits and events can be\ncombined by meaning";
+"category.menu.edit" = "Edit";
+"category.menu.delete" = "Delete";
+"category.delete.confirm.title" = "Are you sure this category is not needed?";
+"category.alert.buttonDelete" = "Delete";
+"category.alert.buttonCancel" = "Cancel";
 
 // MARK: - CreatingNewCategoryViewController
 "new.category.title" = "New category";
+"new.category.title.edit" = "Editing category";
 "new.category.search.placeholder" = "Enter category name";
 "new.button.text" = "Ready";
 

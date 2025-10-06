@@ -168,6 +168,46 @@ final class CategoryViewController: UIViewController {
         let navController = UINavigationController(rootViewController: creatingVC)
         present(navController, animated: true)
     }
+    
+    private func editCategory(at indexPath: IndexPath) {
+        let categoryName = viewModel.getCategoryTitle(at: indexPath.row)
+        let editingVC = CreatingNewCategoryViewController(
+            categoryName: categoryName,
+            categoryIndex: indexPath.row
+        )
+        
+        editingVC.onCategoryUpdated = { [weak self] updatedName, index in
+            self?.viewModel.updateCategory(at: index, with: updatedName)
+        }
+        
+        let navController = UINavigationController(rootViewController: editingVC)
+        present(navController, animated: true)
+    }
+    
+    private func confirmDeleteCategory(at indexPath: IndexPath) {
+        let alertController = UIAlertController(
+            title: NSLocalizedString("category.delete.confirm.title", comment: "Delete confirmation title"),
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        
+        let deleteAction = UIAlertAction(
+            title: NSLocalizedString("category.alert.buttonDelete", comment: "Delete"),
+            style: .destructive
+        ) { [weak self] _ in
+            self?.viewModel.deleteCategory(at: indexPath.row)
+        }
+        
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("category.alert.buttonCancel", comment: "Cancel"),
+            style: .cancel
+        )
+        
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
 }
 
 extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
@@ -232,5 +272,30 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             viewModel.deleteCategory(at: indexPath.row)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: {
+            return nil
+        }) { [weak self] _ in
+            let editAction = UIAction(
+                title: NSLocalizedString("category.menu.edit", comment: "Edit category"),
+            ) { _ in
+                self?.editCategory(at: indexPath)
+            }
+            
+            let deleteAction = UIAction(
+                title: NSLocalizedString("category.menu.delete", comment: "Delete category"),
+                attributes: .destructive
+            ) { _ in
+                self?.confirmDeleteCategory(at: indexPath)
+            }
+            
+            return UIMenu(children: [editAction, deleteAction])
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, shouldSpringLoadRowAt indexPath: IndexPath, with context: UISpringLoadedInteractionContext) -> Bool {
+        return false
     }
 }
