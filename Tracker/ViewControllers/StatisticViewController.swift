@@ -32,10 +32,14 @@ final class StatisticViewController: UIViewController {
         return collectionView
     }()
     
-    private let titleBestTime = "Лучший период"
-    private let perfectcDays = "Идеальные дни"
-    private let trackersCompleted = "Трекеров завершено"
-    private let averageValue = "Среднее значение"
+    private let titleBestTime = NSLocalizedString("statistic.titleBestTime.title",
+                                                 comment: "Title cell statisticVC")
+    private let perfectcDays = NSLocalizedString("statistic.perfectcDays.title",
+                                                 comment: "Title cell perfectDays statisticVC")
+    private let trackersCompleted = NSLocalizedString("statistic.trackersCompleted.title",
+                                                 comment: "Title cell trackerCompleted statisticVC")
+    private let averageValue = NSLocalizedString("statistic.averageValue.title",
+                                                 comment: "Title cell averageValue statisticVC")
     
     private lazy var titleCells: [String] = [titleBestTime, perfectcDays, trackersCompleted, averageValue]
 

@@ -11,6 +11,12 @@
 "trackers.nav.title" = "Трекеры";
 "trackers.search.placeholder" = "Поиск";
 "trackers.empty.title" = "Что будем отслеживать?";
+"trackers.buttonFilter.title" = "Фильтры";
+"trackers.menu.edit" = "Редактировать";
+"trackers.menu.delete" = "Удалить";
+"trackers.alert.title" = "Уверены что хотите удалить трекер?";
+"trackers.alert.buttonDelete" = "Удалить";
+"trackers.alert.buttonCancel" = "Отменить";
 
 // MARK: - TrackerTypeViewController
 "trackertype.nav.title" = "Создание трекера";
@@ -26,6 +32,8 @@
 "creatingtrackers.button.create" = "Создать";
 "creatingtrackers.cell.category" = "Категория";
 "creatingtrackers.cell.schedule" = "Расписание";
+"creatingtrackers.title.editHabbit" = "Редактирование привычки";
+"creatingtrackers.title.editHabbit.button" = "Сохранить";
 
 // Days of week
 "creating.tracker.daily" = "Каждый день";
@@ -63,3 +71,7 @@
 // MARK: - StatisticViewController
 "statistic.nav.title" = "Статистика";
 "statictic.placeholder.title" = "Анализировать пока нечего";
+"statistic.titleBestTime.title" = "Лучший период";
+"statistic.perfectcDays.title" = "Идеальные дни";
+"statistic.trackersCompleted.title" = "Трекеров завершено";
+"statistic.averageValue.title" = "Среднее значение";

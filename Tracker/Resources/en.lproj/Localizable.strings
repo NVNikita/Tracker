@@ -11,6 +11,12 @@
 "trackers.nav.title" = "Trackers";
 "trackers.search.placeholder" = "Search";
 "trackers.empty.title" = "What are we going to track?";
+"trackers.buttonFilter.title" = "Filters";
+"trackers.menu.edit" = "Edit";
+"trackers.menu.delete" = "Delete";
+"trackers.alert.title" = "Are you sure you want to delete the tracker?";
+"trackers.alert.buttonDelete" = "Delete";
+"trackers.alert.buttonCancel" = "Cancel";
 
 // MARK: - TrackerTypeViewController
 "trackertype.nav.title" = "Creating a tracker";
@@ -26,6 +32,8 @@
 "creatingtrackers.button.create" = "Create";
 "creatingtrackers.cell.category" = "Category";
 "creatingtrackers.cell.schedule" = "Schedule";
+"creatingtrackers.title.editHabbit" = "Habit editing";
+"creatingtrackers.title.editHabbit.button" = "Save";
 
 // Days of week
 "creating.tracker.daily" = "Every day";
@@ -63,4 +71,8 @@
 // MARK: - StatisticViewController
 "statistic.nav.title" = "Statistic";
 "statictic.placeholder.title" = "There is nothing to analyze yet";
+"statistic.titleBestTime.title" = "Best period";
+"statistic.perfectcDays.title" = "Perfect days";
+"statistic.trackersCompleted.title" = "Trackers completed";
+"statistic.averageValue.title" = "Average value";
 

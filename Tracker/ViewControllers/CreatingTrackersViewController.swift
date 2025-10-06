@@ -100,8 +100,10 @@ final class CreatingTrackersViewController: UIViewController {
         switch mode {
         case .create:
             title = NSLocalizedString("creatingtrackers.nav.title", comment: "Title CreatingVC")
+            
         case .edit:
-            title = "Редактирование привычки"
+            title = NSLocalizedString("creatingtrackers.title.editHabbit", comment: "Title CreatingVC")
+
         }
         
         navigationController?.navigationBar.titleTextAttributes = [
@@ -142,7 +144,8 @@ final class CreatingTrackersViewController: UIViewController {
             actionButton.setTitle(NSLocalizedString("creatingtrackers.button.create",
                                                     comment: "Text creating button"), for: .normal)
         case .edit:
-            actionButton.setTitle("Сохранить", for: .normal)
+            actionButton.setTitle(NSLocalizedString("creatingtrackers.title.editHabbit.button",
+                                                    comment: "Text creating button"), for: .normal)
         }
         
         cancelButton.setTitle(NSLocalizedString("creatingtrackers.button.cancel",
@@ -202,17 +205,10 @@ final class CreatingTrackersViewController: UIViewController {
     private func updateDaysCount(for tracker: Tracker) {
         let completedDays = DataManager.shared.completedDaysCount(for: tracker)
         
-        let daysText: String
-        switch completedDays {
-        case 1:
-            daysText = "\(completedDays) день"
-        case 2...4:
-            daysText = "\(completedDays) дня"
-        default:
-            daysText = "\(completedDays) дней"
-        }
-        
-        daysCountLabel.text = daysText
+        daysCountLabel.text = String.localizedStringWithFormat(
+            NSLocalizedString("days_count", comment: "Number of completed days"),
+            completedDays
+        )
     }
     
     private func setupTables() {

@@ -64,7 +64,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         } else {
             plusButton.setImage(plusImage, for: .normal)
         }
-        plusButton.tintColor = .white
+        plusButton.tintColor = UIColor.buttonTextColor
         plusButton.backgroundColor = isCompleted ? tracker.color.withAlphaComponent(0.3) : tracker.color
         plusButton.isUserInteractionEnabled = !isFutureDate
     }
@@ -84,7 +84,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         titleLabel.numberOfLines = 2
         
         daysCountLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        daysCountLabel.textColor = .black
+        daysCountLabel.textColor = UIColor.tintStringColor
         
         plusButton.layer.cornerRadius = 17
         plusButton.clipsToBounds = true

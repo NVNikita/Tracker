@@ -41,7 +41,8 @@ class TrackerViewController: UIViewController {
     )
     private lazy var filterButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Фильтры", for: .normal)
+        button.setTitle(NSLocalizedString("trackers.buttonFilter.title",
+                                          comment: "Title button"), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
@@ -280,10 +281,10 @@ extension TrackerViewController: UICollectionViewDelegate {
             return nil
         }) { [weak self] _ in
             return UIMenu(children: [
-                UIAction(title: "Редактировать") { _ in
+                UIAction(title: NSLocalizedString("trackers.menu.edit", comment: "")) { _ in
                     self?.editTracker(tracker)
                 },
-                UIAction(title: "Удалить", attributes: .destructive) { _ in
+                UIAction(title: NSLocalizedString("trackers.menu.delete", comment: ""), attributes: .destructive) { _ in
                     self?.deleteTracker(tracker)
                 }
             ])
@@ -326,16 +327,16 @@ extension TrackerViewController: UICollectionViewDelegate {
     private func deleteTracker(_ tracker: Tracker) {
         let alert = UIAlertController(
             title: nil,
-            message: "Уверены что хотите удалить трекер?",
+            message: NSLocalizedString("trackers.alert.title", comment: ""),
             preferredStyle: .actionSheet
         )
         
-        alert.addAction(UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("trackers.alert.buttonDelete", comment: ""), style: .destructive) { [weak self] _ in
             self?.dataManager.deleteTracker(tracker)
             self?.loadData()
         })
         
-        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("trackers.alert.buttonCancel", comment: ""), style: .cancel))
         
         present(alert, animated: true)
     }
