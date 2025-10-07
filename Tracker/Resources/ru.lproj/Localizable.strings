@@ -17,6 +17,7 @@
 "trackers.alert.title" = "Уверены что хотите удалить трекер?";
 "trackers.alert.buttonDelete" = "Удалить";
 "trackers.alert.buttonCancel" = "Отменить";
+"trackers.empty.search" = "Ничего не найдено";
 
 // MARK: - TrackerTypeViewController
 "trackertype.nav.title" = "Создание трекера";
@@ -81,3 +82,10 @@
 "statistic.perfectcDays.title" = "Идеальные дни";
 "statistic.trackersCompleted.title" = "Трекеров завершено";
 "statistic.averageValue.title" = "Среднее значение";
+
+
+"filters.nav.title" = "Фильтры";
+"filters.all" = "Все трекеры";
+"filters.today" = "Трекеры на сегодня";
+"filters.completed" = "Завершенные";
+"filters.uncompleted" = "Не завершенные";

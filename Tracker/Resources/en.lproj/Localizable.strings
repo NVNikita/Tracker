@@ -17,6 +17,7 @@
 "trackers.alert.title" = "Are you sure you want to delete the tracker?";
 "trackers.alert.buttonDelete" = "Delete";
 "trackers.alert.buttonCancel" = "Cancel";
+"trackers.empty.search" = "Nothing found";
 
 // MARK: - TrackerTypeViewController
 "trackertype.nav.title" = "Creating a tracker";
@@ -82,3 +83,9 @@
 "statistic.trackersCompleted.title" = "Trackers completed";
 "statistic.averageValue.title" = "Average value";
 
+
+"filters.nav.title" = "Filters";
+"filters.all" = "All trackers";
+"filters.today" = "Trackers for today";
+"filters.completed" = "Completed";
+"filters.uncompleted" = "Uncompleted";

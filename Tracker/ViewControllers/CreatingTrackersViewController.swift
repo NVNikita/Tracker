@@ -55,7 +55,6 @@ final class CreatingTrackersViewController: UIViewController {
         label.font = .systemFont(ofSize: 32, weight: .bold)
         label.textColor = UIColor.tintStringColor
         label.textAlignment = .center
-        label.text = "0 дней"
         label.isHidden = true
         return label
     }()

@@ -16,6 +16,15 @@ class TrackerViewController: UIViewController {
             checkPlaceholderVisibility()
         }
     }
+    
+    private var currentFilter: DataManager.Filter = .all {
+        didSet {
+            DataManager.shared.setCurrentFilter(currentFilter)
+            updateFilterButtonAppearance()
+            loadData()
+        }
+    }
+    
     private var completedTrackers: Set<TrackerRecord> = []
     
     private var currentDate = Date() {
@@ -60,11 +69,23 @@ class TrackerViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupCollectionView()
+        
+        currentFilter = DataManager.shared.getCurrentFilter()
+        if currentFilter == .today {
+            datePicker.date = Date()
+            currentDate = Date()
+        }
+        
         loadData()
         
         DataManager.shared.delegate = self
         
-        loadData()
+        updateFilterButtonAppearance()
+        
+        if currentFilter == .today {
+            datePicker.date = Date()
+            currentDate = Date()
+        }
     }
     
     private func loadData() {
@@ -105,7 +126,7 @@ class TrackerViewController: UIViewController {
         default: currentWeekday = nil
         }
         
-        return categories.compactMap { category in
+        let scheduleFilteredCategories = categories.compactMap { category in
             let filteredTrackers = category.trackersArray.filter { tracker in
                 guard let schedule = tracker.schedule, !schedule.isEmpty else { return true }
                 return currentWeekday != nil && schedule.contains { $0 == currentWeekday }
@@ -114,6 +135,37 @@ class TrackerViewController: UIViewController {
                 titleCategory: category.titleCategory,
                 trackersArray: filteredTrackers
             )
+        }
+        
+        return applyAdditionalFilters(to: scheduleFilteredCategories, date: date)
+    }
+    
+    private func applyAdditionalFilters(to categories: [TrackerCategory], date: Date) -> [TrackerCategory] {
+        switch currentFilter {
+        case .all, .today:
+            return categories
+            
+        case .completed:
+            return categories.compactMap { category in
+                let completedTrackers = category.trackersArray.filter { tracker in
+                    DataManager.shared.isTrackerCompleted(tracker, on: date)
+                }
+                return completedTrackers.isEmpty ? nil : TrackerCategory(
+                    titleCategory: category.titleCategory,
+                    trackersArray: completedTrackers
+                )
+            }
+            
+        case .uncompleted:
+            return categories.compactMap { category in
+                let uncompletedTrackers = category.trackersArray.filter { tracker in
+                    !DataManager.shared.isTrackerCompleted(tracker, on: date)
+                }
+                return uncompletedTrackers.isEmpty ? nil : TrackerCategory(
+                    titleCategory: category.titleCategory,
+                    trackersArray: uncompletedTrackers
+                )
+            }
         }
     }
     
@@ -130,6 +182,9 @@ class TrackerViewController: UIViewController {
         trackersCollectionView.dataSource = self
         trackersCollectionView.delegate = self
         trackersCollectionView.backgroundColor = .clear
+        
+        trackersCollectionView.alwaysBounceVertical = true
+        trackersCollectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 0)
     }
     
     private func setupUI() {
@@ -175,11 +230,53 @@ class TrackerViewController: UIViewController {
     
     private func checkPlaceholderVisibility() {
         let filteredCategories = filterTrackers(for: currentDate)
-        let isEmpty = filteredCategories.isEmpty
-        placeholderImageView.isHidden = !isEmpty
-        placeholderLabel.isHidden = !isEmpty
-        trackersCollectionView.isHidden = isEmpty
-        filterButton.isHidden = isEmpty
+        let allTrackersForDate = getTrackersForDateWithoutFilters(currentDate)
+        let hasTrackersForDate = !allTrackersForDate.isEmpty
+        let hasFilteredTrackers = !filteredCategories.isEmpty
+        
+        if !hasFilteredTrackers {
+            if !hasTrackersForDate {
+                placeholderImageView.image = UIImage(named: "trackerLogo")
+                placeholderLabel.text = NSLocalizedString("trackers.empty.title", comment: "Placeholder title trackerVC")
+            } else {
+                placeholderImageView.image = UIImage(named: "emptySearch")
+                placeholderLabel.text = NSLocalizedString("trackers.empty.search", comment: "Nothing found")
+            }
+        }
+        
+        placeholderImageView.isHidden = hasFilteredTrackers
+        placeholderLabel.isHidden = hasFilteredTrackers
+        trackersCollectionView.isHidden = !hasFilteredTrackers
+        
+        filterButton.isHidden = !hasTrackersForDate
+    }
+    
+    private func getTrackersForDateWithoutFilters(_ date: Date) -> [TrackerCategory] {
+        let calendar = Calendar.current
+        let weekdayNumber = calendar.component(.weekday, from: date)
+        
+        let currentWeekday: Tracker.Weekday?
+        switch weekdayNumber {
+        case 2: currentWeekday = .monday
+        case 3: currentWeekday = .tuesday
+        case 4: currentWeekday = .wednesday
+        case 5: currentWeekday = .thursday
+        case 6: currentWeekday = .friday
+        case 7: currentWeekday = .saturday
+        case 1: currentWeekday = .sunday
+        default: currentWeekday = nil
+        }
+        
+        return categories.compactMap { category in
+            let trackersForDate = category.trackersArray.filter { tracker in
+                guard let schedule = tracker.schedule, !schedule.isEmpty else { return true }
+                return currentWeekday != nil && schedule.contains { $0 == currentWeekday }
+            }
+            return trackersForDate.isEmpty ? nil : TrackerCategory(
+                titleCategory: category.titleCategory,
+                trackersArray: trackersForDate
+            )
+        }
     }
     
     private func isTrackerCompletedToday(_ tracker: Tracker, date: Date) -> Bool {
@@ -188,6 +285,12 @@ class TrackerViewController: UIViewController {
     
     private func completedDaysCount(for tracker: Tracker) -> Int {
         return dataManager.completedDaysCount(for: tracker)
+    }
+    
+    private func updateFilterButtonAppearance() {
+        let isFilterActive = currentFilter != .all && currentFilter != .today
+        let titleColor = isFilterActive ? UIColor.redYP : UIColor.tintStringColor
+        filterButton.setTitleColor(titleColor, for: .normal)
     }
     
     private func isFutureDate(_ date: Date) -> Bool {
@@ -200,7 +303,18 @@ class TrackerViewController: UIViewController {
     }
     
     @objc private func filterButtonTapped() {
+        let filterVC = FiltersViewController(currentFilter: currentFilter)
+        filterVC.onFilterSelected = { [weak self] selectedFilter in
+            self?.currentFilter = selectedFilter
+            
+            if selectedFilter == .today {
+                self?.datePicker.date = Date()
+                self?.currentDate = Date()
+            }
+        }
         
+        let navController = UINavigationController(rootViewController: filterVC)
+        present(navController, animated: true)
     }
     
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
