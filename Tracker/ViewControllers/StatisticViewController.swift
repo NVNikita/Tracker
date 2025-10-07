@@ -9,6 +9,8 @@ import UIKit
 
 final class StatisticViewController: UIViewController {
     
+    private let statisticService = StatisticService()
+    
     private lazy var placeholderImageView: UIImageView = {
         let placeholderImageView = UIImageView()
         let image = UIImage(named: "statisticImageView")
@@ -28,7 +30,11 @@ final class StatisticViewController: UIViewController {
     }()
     
     private lazy var statisticCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
         return collectionView
     }()
     
@@ -42,7 +48,9 @@ final class StatisticViewController: UIViewController {
                                                  comment: "Title cell averageValue statisticVC")
     
     private lazy var titleCells: [String] = [titleBestTime, perfectcDays, trackersCompleted, averageValue]
-
+    
+    private var statisticValues: [Int] = [0, 0, 0, 0]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -50,6 +58,14 @@ final class StatisticViewController: UIViewController {
         setupUI()
         activateConsraints()
         setupCollectionView()
+        updateStatistics()
+        
+        DataManager.shared.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateStatistics()
     }
     
     private func setupNavigationBar() {
@@ -73,10 +89,11 @@ final class StatisticViewController: UIViewController {
         placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         placeholderImageView.translatesAutoresizingMaskIntoConstraints = false
         statisticCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        updateUI()
     }
     
     private func activateConsraints() {
-        
         NSLayoutConstraint.activate([
             placeholderImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             placeholderImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 375),
@@ -93,10 +110,28 @@ final class StatisticViewController: UIViewController {
             statisticCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
+    private func updateStatistics() {
+        statisticValues = [
+            statisticService.getBestPeriod(),
+            statisticService.getPerfectDays(),
+            statisticService.getCompletedTrackers(),
+            statisticService.getAverageValue()
+        ]
+        
+        updateUI()
+        statisticCollectionView.reloadData()
+    }
+    
+    private func updateUI() {
+        let hasData = statisticService.hasStatisticsData()
+        placeholderImageView.isHidden = hasData
+        placeholderLabel.isHidden = hasData
+        statisticCollectionView.isHidden = !hasData
+    }
 }
 
-
-extension StatisticViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension StatisticViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 4
     }
@@ -104,14 +139,14 @@ extension StatisticViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! StatisticCollectionViewCell
         cell.titleLabel.text = titleCells[indexPath.row]
-        cell.countLabel.text = "9"
+        cell.countLabel.text = "\(statisticValues[indexPath.row])"
         return cell
     }
 }
 
 extension StatisticViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 343, height: 90)
+        return CGSize(width: collectionView.bounds.width - 32, height: 90)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -120,5 +155,19 @@ extension StatisticViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 12
+    }
+}
+
+extension StatisticViewController: DataManagerDelegate {
+    func didUpdateTrackers(_ changes: [DataManagerChange]) {
+        updateStatistics()
+    }
+    
+    func didUpdateCategories(_ changes: [DataManagerChange]) {
+        updateStatistics()
+    }
+    
+    func didUpdateRecords(_ changes: [DataManagerChange]) {
+        updateStatistics()
     }
 }
