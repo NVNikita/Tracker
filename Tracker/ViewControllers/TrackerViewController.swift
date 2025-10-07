@@ -289,7 +289,7 @@ class TrackerViewController: UIViewController {
     
     private func updateFilterButtonAppearance() {
         let isFilterActive = currentFilter != .all && currentFilter != .today
-        let titleColor = isFilterActive ? UIColor.redYP : UIColor.tintStringColor
+        let titleColor = isFilterActive ? UIColor.redYP : UIColor.white
         filterButton.setTitleColor(titleColor, for: .normal)
     }
     
