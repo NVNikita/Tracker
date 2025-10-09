@@ -33,4 +33,14 @@ final class TabBarController: UITabBarController {
         self.tabBar.layer.masksToBounds = true
         self.tabBar.layer.borderWidth = 0.3
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        AppMetricaHelper.sendEvent(event: "open", screen: "Main")
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AppMetricaHelper.sendEvent(event: "close", screen: "Main")
+    }
 }

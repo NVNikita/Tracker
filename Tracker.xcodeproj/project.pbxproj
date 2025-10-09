@@ -22,6 +22,16 @@
 		EB4B6C972E97EB44004E4018 /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6C962E97EB44004E4018 /* InlineSnapshotTesting */; };
 		EB4B6C992E97EB44004E4018 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6C982E97EB44004E4018 /* SnapshotTesting */; };
 		EB4B6C9B2E97EB44004E4018 /* SnapshotTestingCustomDump in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6C9A2E97EB44004E4018 /* SnapshotTestingCustomDump */; };
+		EB4B6CE82E97FF3D004E4018 /* YandexMobileMetrica in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6CE72E97FF3D004E4018 /* YandexMobileMetrica */; };
+		EB4B6CEA2E97FF3D004E4018 /* YandexMobileMetricaCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6CE92E97FF3D004E4018 /* YandexMobileMetricaCrashes */; };
+		EB4B6CEC2E97FF99004E4018 /* YandexMobileMetrica in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6CEB2E97FF99004E4018 /* YandexMobileMetrica */; };
+		EB4B6CEE2E97FF99004E4018 /* YandexMobileMetricaCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6CED2E97FF99004E4018 /* YandexMobileMetricaCrashes */; };
+		EB4B6CF12E980000004E4018 /* AppMetricaAdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6CF02E980000004E4018 /* AppMetricaAdSupport */; };
+		EB4B6CF32E980000004E4018 /* AppMetricaCore in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6CF22E980000004E4018 /* AppMetricaCore */; };
+		EB4B6CF52E980000004E4018 /* AppMetricaCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6CF42E980000004E4018 /* AppMetricaCrashes */; };
+		EB4B6CF72E980000004E4018 /* AppMetricaLibraryAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6CF62E980000004E4018 /* AppMetricaLibraryAdapter */; };
+		EB4B6CF92E980000004E4018 /* AppMetricaScreenshot in Frameworks */ = {isa = PBXBuildFile; productRef = EB4B6CF82E980000004E4018 /* AppMetricaScreenshot */; };
+		EB4B6CFB2E98076F004E4018 /* AppMetricaHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4B6CFA2E980764004E4018 /* AppMetricaHelper.swift */; };
 		EB4F8F6C2E95BCB9001D690C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4F8F6B2E95BCA3001D690C /* FiltersViewController.swift */; };
 		EB4F8F6E2E95BF0F001D690C /* FiltersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4F8F6D2E95BF02001D690C /* FiltersTableViewCell.swift */; };
 		EB528B352DAAE2E20036FA05 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB528B342DAAE2E20036FA05 /* Tracker.swift */; };
@@ -76,6 +86,7 @@
 		EB4B67F32E1ADEA50030F796 /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		EB4B67F52E1ADEC90030F796 /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		EB4B6C8C2E97E9E5004E4018 /* TrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB4B6CFA2E980764004E4018 /* AppMetricaHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMetricaHelper.swift; sourceTree = "<group>"; };
 		EB4F8F6B2E95BCA3001D690C /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		EB4F8F6D2E95BF02001D690C /* FiltersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersTableViewCell.swift; sourceTree = "<group>"; };
 		EB528B342DAAE2E20036FA05 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
@@ -130,6 +141,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB4B6CEC2E97FF99004E4018 /* YandexMobileMetrica in Frameworks */,
+				EB4B6CEE2E97FF99004E4018 /* YandexMobileMetricaCrashes in Frameworks */,
+				EB4B6CE82E97FF3D004E4018 /* YandexMobileMetrica in Frameworks */,
+				EB4B6CF32E980000004E4018 /* AppMetricaCore in Frameworks */,
+				EB4B6CF72E980000004E4018 /* AppMetricaLibraryAdapter in Frameworks */,
+				EB4B6CF12E980000004E4018 /* AppMetricaAdSupport in Frameworks */,
+				EB4B6CF92E980000004E4018 /* AppMetricaScreenshot in Frameworks */,
+				EB4B6CF52E980000004E4018 /* AppMetricaCrashes in Frameworks */,
+				EB4B6CEA2E97FF3D004E4018 /* YandexMobileMetricaCrashes in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +260,7 @@
 		EBDA92052E783E49002A38A1 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				EB4B6CFA2E980764004E4018 /* AppMetricaHelper.swift */,
 				EBE31AA62E9496D200B30398 /* StatisticService.swift */,
 				EB95C0962E75AE3C0089297F /* UIColor + ext.swift */,
 			);
@@ -359,6 +380,8 @@
 			mainGroup = EBE7BBF22D920B7F00006499;
 			packageReferences = (
 				EB4B6C952E97EB44004E4018 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+				EB4B6CE62E97FEC1004E4018 /* XCRemoteSwiftPackageReference "metrica-sdk-ios" */,
+				EB4B6CEF2E980000004E4018 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */,
 			);
 			productRefGroup = EBE7BBFC2D920B7F00006499 /* Products */;
 			projectDirPath = "";
@@ -408,6 +431,7 @@
 				EB55B9862E71E03300229E4B /* TrackerStore.swift in Sources */,
 				EB7E8A812E13F63600FD822A /* TrackerSectionHeaderView.swift in Sources */,
 				EB95C0972E75AE440089297F /* UIColor + ext.swift in Sources */,
+				EB4B6CFB2E98076F004E4018 /* AppMetricaHelper.swift in Sources */,
 				EB528B352DAAE2E20036FA05 /* Tracker.swift in Sources */,
 				EB0600902E904D630048746C /* StatisticCollectionViewCell.swift in Sources */,
 				EB80F51C2DF192BC00F33B7E /* ScheduleTableViewCell.swift in Sources */,
@@ -745,6 +769,22 @@
 				minimumVersion = 1.18.7;
 			};
 		};
+		EB4B6CE62E97FEC1004E4018 /* XCRemoteSwiftPackageReference "metrica-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yandexmobile/metrica-sdk-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.2;
+			};
+		};
+		EB4B6CEF2E980000004E4018 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/appmetrica/appmetrica-sdk-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.13.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -762,6 +802,51 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EB4B6C952E97EB44004E4018 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTestingCustomDump;
+		};
+		EB4B6CE72E97FF3D004E4018 /* YandexMobileMetrica */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4B6CE62E97FEC1004E4018 /* XCRemoteSwiftPackageReference "metrica-sdk-ios" */;
+			productName = YandexMobileMetrica;
+		};
+		EB4B6CE92E97FF3D004E4018 /* YandexMobileMetricaCrashes */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4B6CE62E97FEC1004E4018 /* XCRemoteSwiftPackageReference "metrica-sdk-ios" */;
+			productName = YandexMobileMetricaCrashes;
+		};
+		EB4B6CEB2E97FF99004E4018 /* YandexMobileMetrica */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4B6CE62E97FEC1004E4018 /* XCRemoteSwiftPackageReference "metrica-sdk-ios" */;
+			productName = YandexMobileMetrica;
+		};
+		EB4B6CED2E97FF99004E4018 /* YandexMobileMetricaCrashes */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4B6CE62E97FEC1004E4018 /* XCRemoteSwiftPackageReference "metrica-sdk-ios" */;
+			productName = YandexMobileMetricaCrashes;
+		};
+		EB4B6CF02E980000004E4018 /* AppMetricaAdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4B6CEF2E980000004E4018 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaAdSupport;
+		};
+		EB4B6CF22E980000004E4018 /* AppMetricaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4B6CEF2E980000004E4018 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaCore;
+		};
+		EB4B6CF42E980000004E4018 /* AppMetricaCrashes */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4B6CEF2E980000004E4018 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaCrashes;
+		};
+		EB4B6CF62E980000004E4018 /* AppMetricaLibraryAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4B6CEF2E980000004E4018 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaLibraryAdapter;
+		};
+		EB4B6CF82E980000004E4018 /* AppMetricaScreenshot */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB4B6CEF2E980000004E4018 /* XCRemoteSwiftPackageReference "appmetrica-sdk-ios" */;
+			productName = AppMetricaScreenshot;
 		};
 /* End XCSwiftPackageProductDependency section */
 

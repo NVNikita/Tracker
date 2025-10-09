@@ -311,6 +311,7 @@ class TrackerViewController: UIViewController {
     }
     
     private func isTrackerCompletedToday(_ tracker: Tracker, date: Date) -> Bool {
+        AppMetricaHelper.sendEvent(event: "click", screen: "Main", item: "track")
         return dataManager.isTrackerCompleted(tracker, on: date)
     }
     
@@ -329,11 +330,13 @@ class TrackerViewController: UIViewController {
     }
     
     @objc private func addButtonTapped() {
+        AppMetricaHelper.sendEvent(event: "click", screen: "Main", item: "add_track")
         let navVC = UINavigationController(rootViewController: TrackerTypeViewController())
         present(navVC, animated: true)
     }
     
     @objc private func filterButtonTapped() {
+        AppMetricaHelper.sendEvent(event: "click", screen: "Main", item: "filter")
         let filterVC = FiltersViewController(currentFilter: currentFilter)
         filterVC.onFilterSelected = { [weak self] selectedFilter in
             self?.currentFilter = selectedFilter
@@ -465,6 +468,7 @@ extension TrackerViewController: UICollectionViewDelegate {
     }
     
     private func editTracker(_ tracker: Tracker) {
+        AppMetricaHelper.sendEvent(event: "click", screen: "Main", item: "edit")
         let category = categories.first { category in
             category.trackersArray.contains { $0.id == tracker.id }
         }
@@ -477,6 +481,7 @@ extension TrackerViewController: UICollectionViewDelegate {
     }
     
     private func deleteTracker(_ tracker: Tracker) {
+        AppMetricaHelper.sendEvent(event: "click", screen: "Main", item: "delete")
         let alert = UIAlertController(
             title: nil,
             message: NSLocalizedString("trackers.alert.title", comment: ""),
