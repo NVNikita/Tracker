@@ -93,6 +93,22 @@ final class CreatingTrackersViewController: UIViewController {
         }
         
         updateActionButtonState()
+        
+        setupPresentationController()
+    }
+
+    private func setupPresentationController() {
+        isModalInPresentation = false
+        
+        navigationController?.presentationController?.delegate = self
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if isMovingFromParent || isBeingDismissed {
+            saveChangesIfNeeded()
+        }
     }
     
     private func setupNavBar() {
@@ -374,6 +390,37 @@ final class CreatingTrackersViewController: UIViewController {
         }
     }
     
+    private func saveChangesIfNeeded() {
+        guard isFormComplete() else { return }
+        
+        guard let cell = topTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldTableViewCell,
+              let trackerName = cell.textField.text?.trimmingCharacters(in: .whitespaces),
+              !trackerName.isEmpty else { return }
+        
+        guard !selectedDays.isEmpty else { return }
+        guard let selectedColor else { return }
+        guard let selectedEmoji else { return }
+        guard let selectedCategory else { return }
+        
+        switch mode {
+        case .edit:
+            guard let existingTracker = trackerToEdit else { return }
+            
+            let updatedTracker = Tracker(
+                id: existingTracker.id,
+                name: trackerName,
+                color: selectedColor,
+                emoji: selectedEmoji,
+                schedule: convertDaysToWeekdays()
+            )
+            
+            DataManager.shared.updateTracker(updatedTracker, category: selectedCategory)
+            
+        case .create:
+            break
+        }
+    }
+    
     private func convertDaysToWeekdays() -> [Tracker.Weekday] {
         var weekdays: [Tracker.Weekday] = []
         
@@ -475,7 +522,7 @@ final class CreatingTrackersViewController: UIViewController {
             
             DataManager.shared.updateTracker(updatedTracker, category: selectedCategory)
             
-            presentingViewController?.dismiss(animated: true)
+            navigationController?.dismiss(animated: true)
         }
     }
     
@@ -590,6 +637,7 @@ extension CreatingTrackersViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        saveChangesIfNeeded()
         updateActionButtonState()
     }
 }
@@ -648,6 +696,7 @@ extension CreatingTrackersViewController: UICollectionViewDelegate {
         }
         collectionView.reloadData()
         updateActionButtonState()
+        saveChangesIfNeeded()
     }
 }
 
@@ -670,5 +719,11 @@ extension CreatingTrackersViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 20)
+    }
+}
+
+extension CreatingTrackersViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        saveChangesIfNeeded()
     }
 }
