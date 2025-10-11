@@ -15,9 +15,10 @@ final class CategoryViewController: UIViewController {
     private let placeholderImageView = UIImageView(image: UIImage(named: "trackerLogo"))
     private let placeholderTitle: UILabel = {
         let title = UILabel()
-        title.text = "Привычки и события можно\nобъединить по смыслу"
+        title.text = NSLocalizedString("category.empty.title",
+                                       comment: "Title for empty categories view")
         title.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        title.textColor = .black
+        title.textColor = UIColor.tintStringColor
         title.numberOfLines = 0
         title.textAlignment = .center
         return title
@@ -25,10 +26,11 @@ final class CategoryViewController: UIViewController {
     
     private lazy var newCategoryButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Добавить категорию", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitle(NSLocalizedString("category.button.text",
+                                          comment: "Button new category text"), for: .normal)
+        button.setTitleColor(UIColor.buttonTextColor, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.backgroundColor = .black
+        button.backgroundColor = UIColor.backgroundButtonColor
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(newCategoryButtonTapped), for: .touchUpInside)
@@ -97,15 +99,15 @@ final class CategoryViewController: UIViewController {
     }
     
     private func setupNavBar() {
-        title = "Категория"
+        title = NSLocalizedString("category.nav.title", comment: "Title for CategoryVC")
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.tintStringColor
         ]
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.backgroundViewColor
         
         view.addSubview(placeholderTitle)
         view.addSubview(placeholderImageView)
@@ -166,6 +168,46 @@ final class CategoryViewController: UIViewController {
         let navController = UINavigationController(rootViewController: creatingVC)
         present(navController, animated: true)
     }
+    
+    private func editCategory(at indexPath: IndexPath) {
+        let categoryName = viewModel.getCategoryTitle(at: indexPath.row)
+        let editingVC = CreatingNewCategoryViewController(
+            categoryName: categoryName,
+            categoryIndex: indexPath.row
+        )
+        
+        editingVC.onCategoryUpdated = { [weak self] updatedName, index in
+            self?.viewModel.updateCategory(at: index, with: updatedName)
+        }
+        
+        let navController = UINavigationController(rootViewController: editingVC)
+        present(navController, animated: true)
+    }
+    
+    private func confirmDeleteCategory(at indexPath: IndexPath) {
+        let alertController = UIAlertController(
+            title: NSLocalizedString("category.delete.confirm.title", comment: "Delete confirmation title"),
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        
+        let deleteAction = UIAlertAction(
+            title: NSLocalizedString("category.alert.buttonDelete", comment: "Delete"),
+            style: .destructive
+        ) { [weak self] _ in
+            self?.viewModel.deleteCategory(at: indexPath.row)
+        }
+        
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString("category.alert.buttonCancel", comment: "Cancel"),
+            style: .cancel
+        )
+        
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        
+        present(alertController, animated: true)
+    }
 }
 
 extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
@@ -177,6 +219,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = categoriesTableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CategoryTableViewCell
         
         cell.titleLabel.text = viewModel.getCategoryTitle(at: indexPath.row)
+        cell.titleLabel.textColor = UIColor.tintStringColor
         
         if viewModel.getCategoryTitle(at: indexPath.row) == selectedCategory {
             cell.accessoryType = .checkmark
@@ -229,5 +272,30 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             viewModel.deleteCategory(at: indexPath.row)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: {
+            return nil
+        }) { [weak self] _ in
+            let editAction = UIAction(
+                title: NSLocalizedString("category.menu.edit", comment: "Edit category"),
+            ) { _ in
+                self?.editCategory(at: indexPath)
+            }
+            
+            let deleteAction = UIAction(
+                title: NSLocalizedString("category.menu.delete", comment: "Delete category"),
+                attributes: .destructive
+            ) { _ in
+                self?.confirmDeleteCategory(at: indexPath)
+            }
+            
+            return UIMenu(children: [editAction, deleteAction])
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, shouldSpringLoadRowAt indexPath: IndexPath, with context: UISpringLoadedInteractionContext) -> Bool {
+        return false
     }
 }

@@ -15,7 +15,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     static let identifier = "TrackerCell"
     
     private var countDays: Int = 0
-    private let containerView = UIView()
+    let containerView = UIView()
     private let emojiLabel = UILabel()
     private let titleLabel = UILabel()
     private let daysCountLabel = UILabel()
@@ -54,7 +54,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         titleLabel.text = tracker.name
         emojiLabel.text = tracker.emoji
         containerView.backgroundColor = tracker.color
-        daysCountLabel.text = "\(countDays) день"
+        daysCountLabel.text = String(format: NSLocalizedString("days_count", comment: ""), countDays)
         
         let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
         let plusImage = UIImage(systemName: "plus", withConfiguration: config)
@@ -64,7 +64,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         } else {
             plusButton.setImage(plusImage, for: .normal)
         }
-        plusButton.tintColor = .white
+        plusButton.tintColor = UIColor.buttonTextColor
         plusButton.backgroundColor = isCompleted ? tracker.color.withAlphaComponent(0.3) : tracker.color
         plusButton.isUserInteractionEnabled = !isFutureDate
     }
@@ -84,7 +84,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         titleLabel.numberOfLines = 2
         
         daysCountLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        daysCountLabel.textColor = .black
+        daysCountLabel.textColor = UIColor.tintStringColor
         
         plusButton.layer.cornerRadius = 17
         plusButton.clipsToBounds = true

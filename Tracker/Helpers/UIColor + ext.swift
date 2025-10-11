@@ -10,12 +10,46 @@ import UIKit
 import UIKit
 
 extension UIColor {
-    static var backgroundTables: UIColor {
-        return UIColor(red: 0.90, green: 0.91, blue: 0.92, alpha: 0.3)
+    static var backgroundViewColor: UIColor = UIColor.systemBackground
+    
+    static var tintStringColor = UIColor { (traits: UITraitCollection) -> UIColor in
+        if traits.userInterfaceStyle == .light {
+            return UIColor.black
+        } else {
+            return UIColor.white
+        }
     }
     
-    static var backgroundView: UIColor {
-        return UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.0)
+    static var buttonTextColor = UIColor { (traits: UITraitCollection) -> UIColor in
+        if traits.userInterfaceStyle == .light {
+            return UIColor.white
+        } else {
+            return UIColor.black
+        }
+    }
+    
+    static var backgroundButtonColor = UIColor { (traits: UITraitCollection) -> UIColor in
+        if traits.userInterfaceStyle == .light {
+            return UIColor.black
+        } else {
+            return UIColor.white
+        }
+    }
+    
+    static var backgroundTables = UIColor { (traits: UITraitCollection) -> UIColor in
+        if traits.userInterfaceStyle == .light {
+            return UIColor(red: 0.902, green: 0.910, blue: 0.922, alpha: 0.302)
+        } else {
+            return UIColor(red: 0.255, green: 0.255, blue: 0.255, alpha: 0.85)
+        }
+    }
+    
+    static var backgroundPicker = UIColor { (traits: UITraitCollection) -> UIColor in
+        if traits.userInterfaceStyle == .light {
+            return UIColor(red: 0.90, green: 0.91, blue: 0.92, alpha: 1.0)
+        } else {
+            return .white
+        }
     }
     
     static var grayButton: UIColor {

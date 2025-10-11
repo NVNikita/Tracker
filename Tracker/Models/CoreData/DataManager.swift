@@ -123,6 +123,99 @@ final class DataManager: NSObject {
             return 0
         }
     }
+    
+    func deleteTracker(_ tracker: Tracker) {
+        do {
+            let records = try recordStore.fetchRecords(for: tracker.id)
+            for record in records {
+                try recordStore.deleteRecord(record)
+            }
+            
+            try trackerStore.deleteTracker(tracker)
+            
+        } catch {
+            print("Failed to delete tracker: \(error)")
+        }
+    }
+    
+    func updateTracker(_ tracker: Tracker, category: String) {
+        do {
+            let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
+            
+            if let trackerCoreData = try context.fetch(fetchRequest).first {
+                trackerCoreData.name = tracker.name
+                trackerCoreData.emoji = tracker.emoji
+                
+                if let colorData = try? NSKeyedArchiver.archivedData(withRootObject: tracker.color, requiringSecureCoding: false) {
+                    trackerCoreData.colorData = colorData
+                }
+                
+                if let schedule = tracker.schedule {
+                    let rawValues = schedule.map { $0.rawValue }
+                    if let scheduleData = try? NSKeyedArchiver.archivedData(withRootObject: rawValues, requiringSecureCoding: false) {
+                        trackerCoreData.schedule = scheduleData
+                    }
+                } else {
+                    trackerCoreData.schedule = nil
+                }
+                
+                let categoryFetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
+                categoryFetchRequest.predicate = NSPredicate(format: "titleCategory == %@", category)
+                
+                let categoryCoreData: TrackerCategoryCoreData
+                
+                if let existingCategory = try context.fetch(categoryFetchRequest).first {
+                    categoryCoreData = existingCategory
+                } else {
+                    categoryCoreData = TrackerCategoryCoreData(context: context)
+                    categoryCoreData.titleCategory = category
+                }
+                
+                trackerCoreData.category?.removeFromTrackers(trackerCoreData)
+                categoryCoreData.addToTrackers(trackerCoreData)
+                
+                try context.save()
+            }
+        } catch {
+            print("Failed to update tracker: \(error)")
+        }
+    }
+}
+
+extension DataManager {
+    enum Filter: String, CaseIterable {
+        case all = "all"
+        case today = "today"
+        case completed = "completed"
+        case uncompleted = "uncompleted"
+        
+        var localizedString: String {
+            switch self {
+            case .all:
+                return NSLocalizedString("filters.all", comment: "All trackers")
+            case .today:
+                return NSLocalizedString("filters.today", comment: "Trackers for today")
+            case .completed:
+                return NSLocalizedString("filters.completed", comment: "Completed trackers")
+            case .uncompleted:
+                return NSLocalizedString("filters.uncompleted", comment: "Uncompleted trackers")
+            }
+        }
+    }
+    
+    private static var currentFilterKey: String { "currentFilter" }
+    
+    func getCurrentFilter() -> Filter {
+        if let rawValue = UserDefaults.standard.string(forKey: DataManager.currentFilterKey) {
+            return Filter(rawValue: rawValue) ?? .all
+        }
+        return .all
+    }
+    
+    func setCurrentFilter(_ filter: Filter) {
+        UserDefaults.standard.set(filter.rawValue, forKey: DataManager.currentFilterKey)
+    }
 }
 
 extension DataManager: TrackerStoreDelegate {

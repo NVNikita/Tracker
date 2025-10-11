@@ -9,7 +9,15 @@ import UIKit
 
 final class ScheduleViewController: UIViewController {
     
-    private let days = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    private let days = [
+        NSLocalizedString("schedule.day.monday", comment: ""),
+        NSLocalizedString("schedule.day.tuesday", comment: ""),
+        NSLocalizedString("schedule.day.wednesday", comment: ""),
+        NSLocalizedString("schedule.day.thursday", comment: ""),
+        NSLocalizedString("schedule.day.friday", comment: ""),
+        NSLocalizedString("schedule.day.saturday", comment: ""),
+        NSLocalizedString("schedule.day.sunday", comment: "")
+        ]
     var selectedDays: Set<String> = []
     private var readyButton = UIButton(type: .system)
     private var scheduleTable = UITableView()
@@ -24,26 +32,27 @@ final class ScheduleViewController: UIViewController {
     }
     
     private func setupNavBar() {
-        title = "Расписание"
+        title = NSLocalizedString("schedule.nav.title", comment: "Title sheduleVC")
         navigationController?.navigationBar.titleTextAttributes = [
             .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-            .foregroundColor: UIColor.black
+            .foregroundColor: UIColor.tintStringColor
         ]
         navigationItem.setHidesBackButton(true, animated: false)
     }
     
     private func activateUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.backgroundViewColor
         view.addSubview(readyButton)
         view.addSubview(scheduleTable)
         
         readyButton.translatesAutoresizingMaskIntoConstraints = false
         scheduleTable.translatesAutoresizingMaskIntoConstraints = false
         
-        readyButton.setTitle("Готово", for: .normal)
-        readyButton.setTitleColor(.white, for: .normal)
+        readyButton.setTitle(NSLocalizedString("schedule.button.ready",
+                                               comment: "Text ready button"), for: .normal)
+        readyButton.setTitleColor(.buttonTextColor, for: .normal)
         readyButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        readyButton.backgroundColor = .black
+        readyButton.backgroundColor = UIColor.backgroundButtonColor
         readyButton.layer.masksToBounds = true
         readyButton.layer.cornerRadius = 16
         readyButton.addTarget(self, action: #selector(readyButtonTapped), for: .touchUpInside)

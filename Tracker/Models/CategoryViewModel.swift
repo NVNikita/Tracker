@@ -64,4 +64,17 @@ final class CategoryViewModel {
         guard index < categories.count else { return "" }
         return categories[index]
     }
+    
+    func updateCategory(at index: Int, with newName: String) {
+        guard index >= 0 && index < categories.count else { return }
+        let oldName = categories[index]
+        
+        do {
+            try categoryStore.deleteCategory(title: oldName)
+            try categoryStore.saveCategory(title: newName)
+            loadCategories()
+        } catch {
+            print("Ошибка обновления категории: \(error)")
+        }
+    }
 }
